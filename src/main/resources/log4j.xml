@@ -18,4 +18,8 @@
 		<priority value="warn" />
 		<appender-ref ref="stdout" />
 	</category>
+	<category name="org.springframework">
+		<priority value="warn" />
+		<appender-ref ref="stdout" />
+	</category>
 </log4j:configuration>

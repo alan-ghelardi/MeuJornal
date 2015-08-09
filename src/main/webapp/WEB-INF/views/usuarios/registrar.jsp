@@ -11,6 +11,9 @@
 		<form role="form" class="form-horizontal" method="POST"
 			action="${pageContext.request.contextPath}/registrar"
 			novalidate="novalidate">
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+
 			<div class="form-group">
 				<label for="name" class="control-label col-md-3">Seu nome</label>
 				<div class="col-md-9">

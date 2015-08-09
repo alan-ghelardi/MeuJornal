@@ -22,6 +22,10 @@ public class UsuariosController {
 	@Inject
 	private UsuariosDAO usuariosDAO;
 
+	@Get("/entrar")
+	public void entrar() {
+	}
+
 	@Get("/registrar")
 	public void registrar() {
 
