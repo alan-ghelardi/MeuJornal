@@ -20,7 +20,15 @@
 				"usuario.nomeDeUsuario" : {
 					required : true,
 					maxlength : 30,
-					pattern : /^(?=.*?[a-z]{3,})[a-z0-9\-_]+$/
+					pattern : /^(?=.*?[a-z]{3,})[a-z0-9\-_]+$/,
+					remote : {
+						url : baseUrl + "/registrar/checar-usuario",
+						data : {
+							q : function() {
+								return $("#username").val();
+							}
+						}
+					}
 				},
 				"usuario.senha" : {
 					required : true,
@@ -32,7 +40,15 @@
 				},
 				"usuario.email" : {
 					required : true,
-					email : true
+					email : true,
+					remote : {
+						url : baseUrl + "/registrar/checar-usuario",
+						data : {
+							q : function() {
+								return $("#email").val();
+							}
+						}
+					}
 				},
 				"confirmacaoDoEmail" : {
 					required : true,
@@ -54,7 +70,8 @@
 				"usuario.nomeDeUsuario" : {
 					required : "Por favor, escolha seu nome de usuário.",
 					maxlength : "Valor longo demais. O nome de usuário deve ter no máximo {0} caracteres.",
-					pattern : "Nome de usuário inválido."
+					pattern : "Nome de usuário inválido.",
+					remote : "O nome de usuário já existe."
 				},
 				"usuario.senha" : {
 					required : "Por favor, escolha uma senha",
@@ -66,7 +83,8 @@
 				},
 				"usuario.email" : {
 					required : "Por favor, informe seu e-mail",
-					email : "Endereço de e-mail inválido."
+					email : "Endereço de e-mail inválido.",
+					remote : "O e-mail já existe. Por favor, informe um endereço de e-mail diferente."
 				},
 				"confirmacaoDoEmail" : {
 					required : "Por favor, digite seu e-mail novamente",

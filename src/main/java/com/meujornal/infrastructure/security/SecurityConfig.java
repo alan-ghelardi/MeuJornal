@@ -41,13 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/entrar", "/registrar", "/css/**", "/fonts/**",
-						"/js/**").permitAll().antMatchers("/admin/**")
-				.hasRole("ADMINISTRADOR").anyRequest().authenticated().and()
-				.formLogin().loginPage("/entrar").loginProcessingUrl("/entrar")
-				.failureUrl("/entrar?error=true").defaultSuccessUrl("/")
-				.usernameParameter("nomeDeUsuario").passwordParameter("senha")
-				.and().logout().logoutUrl("/sair")
+				.antMatchers("/entrar", "/registrar/**", "/css/**",
+						"/fonts/**", "/js/**").permitAll()
+				.antMatchers("/admin/**").hasRole("ADMINISTRADOR").anyRequest()
+				.authenticated().and().formLogin().loginPage("/entrar")
+				.loginProcessingUrl("/entrar").failureUrl("/entrar?error=true")
+				.defaultSuccessUrl("/").usernameParameter("nomeDeUsuario")
+				.passwordParameter("senha").and().logout().logoutUrl("/sair")
 				.logoutSuccessUrl("/entrar?logout=true")
 				.invalidateHttpSession(true);
 	}

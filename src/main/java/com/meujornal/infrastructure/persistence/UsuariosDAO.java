@@ -16,4 +16,13 @@ public class UsuariosDAO {
 		entityManager.persist(umUsuario);
 	}
 
+	public boolean jaExisteUmUsuarioComNomeDeUsuarioOuEmail(
+			String nomeDeUsuarioOuEmail) {
+		String query = "SELECT u FROM Usuario AS u WHERE u.nomeDeUsuario = :nomeDeUsuarioOuEmail OR u.email = :nomeDeUsuarioOuEmail";
+
+		return entityManager.createQuery(query, Usuario.class)
+				.setParameter("nomeDeUsuarioOuEmail", nomeDeUsuarioOuEmail)
+				.getResultList().size() != 0;
+	}
+
 }
