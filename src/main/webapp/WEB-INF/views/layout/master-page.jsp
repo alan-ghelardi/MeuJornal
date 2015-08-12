@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +20,9 @@
     <![endif]-->
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+<script>
+	window.baseUrl = "${pageContext.request.contextPath}";
+</script>
 <sitemesh:write property="head" />
 </head>
 <body>
@@ -27,27 +33,49 @@
 				interesse, compartilhe informações, receba novidades e muito mais!</p>
 		</div>
 	</header>
-	<nav class="navbar navbar-default">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar-links"
-					aria-expanded="false">
-					<span class="sr-only">Alternar navegação</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-			</div>
+	<sec:authorize access="isAuthenticated()">
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar-links"
+						aria-expanded="false">
+						<span class="sr-only">Alternar navegação</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+				</div>
 
-			<div class="collapse navbar-collapse" id="navbar-links">
-				<ul class="nav navbar-nav">
-					<li><a href="${linkTo[HomeController].index}"><i
-							class="glyphicon glyphicon-home"></i> Home</a></li>
-					<li><a href="#">Sobre</a></li>
-				</ul>
+				<div class="collapse navbar-collapse" id="navbar-links">
+					<ul class="nav navbar-nav">
+						<li><a href="${linkTo[HomeController].index}"><i
+								class="glyphicon glyphicon-home"></i> Home</a></li>
+						<li><a href="#">Sobre</a></li>
+						<sec:authorize access="hasRole('ADMINISTRADOR')">
+							<li><a href="#">Administração</a></li>
+						</sec:authorize>
+					</ul>
+
+					<form class="navbar-form navbar-left" method="POST"
+						action="${pageContext.request.contextPath}/sair">
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+						<div class="form-group">
+							<p class="form-control-static">
+								Você acessou como
+								<c:out value="${pageContext.request.remoteUser}"></c:out>
+							</p>
+						</div>
+
+						<button type="submit" class="btn btn-sm">
+							<i class="glyphicon glyphicon-log-out"></i> Sair
+						</button>
+					</form>
+				</div>
 			</div>
-		</div>
-	</nav>
+		</nav>
+	</sec:authorize>
+
 	<div class="container">
 		<main id="main" role="main">
 		<div class="row">

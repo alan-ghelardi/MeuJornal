@@ -33,6 +33,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue
 	private Long id;
 	@NotBlank
+	@Size(max = 60)
 	private String nome;
 	@NotBlank
 	@Pattern(regexp = "^(?=.*?[a-z]{3,})[a-z0-9\\-_]+$")
@@ -48,6 +49,10 @@ public class Usuario implements Serializable {
 	@NotNull
 	@Enumerated(STRING)
 	private Papel papel = Papel.USUARIO;
+	@NotBlank
+	private String perguntaDeSeguranca;
+	@NotBlank
+	private String respostaDaPerguntaDeSeguranca;
 
 	public Long getId() {
 		return id;
@@ -74,7 +79,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSenha(String senha) {
-		this.senha = senha;
+		this.senha = SensitiveDataEncoder.encode(senha);
 	}
 
 	public String getEmail() {
@@ -91,6 +96,24 @@ public class Usuario implements Serializable {
 
 	public void setPapel(Papel papel) {
 		this.papel = papel;
+	}
+
+	public String getPerguntaDeSeguranca() {
+		return perguntaDeSeguranca;
+	}
+
+	public void setPerguntaDeSeguranca(String perguntaDeSeguranca) {
+		this.perguntaDeSeguranca = perguntaDeSeguranca;
+	}
+
+	public String getRespostaDaPerguntaDeSeguranca() {
+		return respostaDaPerguntaDeSeguranca;
+	}
+
+	public void setRespostaDaPerguntaDeSeguranca(
+			String respostaDaPerguntaDeSeguranca) {
+		this.respostaDaPerguntaDeSeguranca = SensitiveDataEncoder
+				.encode(respostaDaPerguntaDeSeguranca);
 	}
 
 	@Override

@@ -4,18 +4,29 @@
 <html>
 <head>
 <title>Criar Conta</title>
+<script
+	src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/global-validation-settings.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/additional-methods.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/users-signup-validator.js"></script>
 </head>
 <body>
 	<div class="col-md-12">
 		<h2>Crie uma conta no MeuJornal.com</h2>
-		<form role="form" class="form-horizontal" method="POST"
-			action="${pageContext.request.contextPath}/registrar"
+		<form id="registrar-usuarios-form" role="form" class="form-horizontal"
+			method="POST" action="${pageContext.request.contextPath}/registrar"
 			novalidate="novalidate">
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+
 			<div class="form-group">
 				<label for="name" class="control-label col-md-3">Seu nome</label>
 				<div class="col-md-9">
 					<input id="name" name="usuario.nome" class="form-control"
-						type="text" required="required" />
+						type="text" />
 				</div>
 			</div>
 
@@ -24,11 +35,10 @@
 					usuário</label>
 				<div class="col-md-9">
 					<input id="username" name="usuario.nomeDeUsuario"
-						class="form-control" type="text" aria-describedby="username-help"
-						required="required" /> <span id="username-help"
-						class="help-block">Apenas letras minúsculas (ao menos 3),
-						dígitos e os caracteres hífen e/ou sublinhado. Não digite outros
-						caracteres ou espaços em branco.</span>
+						class="form-control" type="text" aria-describedby="username-help" />
+					<span id="username-help" class="help-block">Apenas letras
+						minúsculas (ao menos 3), dígitos e os caracteres hífen e/ou
+						sublinhado. Não digite outros caracteres ou espaços em branco.</span>
 				</div>
 			</div>
 
@@ -37,11 +47,10 @@
 					uma senha</label>
 				<div class="col-md-9">
 					<input id="password" name="usuario.senha" class="form-control"
-						type="password" aria-describedby="password-help"
-						required="required" /> <span id="password-help"
-						class="help-block">Deve ter entre 8 e 16 caracteres e
-						conter ao menos uma letra maiúscula, uma letra minúscula e um
-						dígito.</span>
+						type="password" aria-describedby="password-help" /> <span
+						id="password-help" class="help-block">Deve ter entre 8 e 16
+						caracteres e conter ao menos uma letra maiúscula, uma letra
+						minúscula e um dígito.</span>
 				</div>
 			</div>
 
@@ -49,8 +58,8 @@
 				<label for="confirm-password" class="control-label col-md-3">Confirme
 					sua senha</label>
 				<div class="col-md-9">
-					<input id="confirm-password" name="senha" class="form-control"
-						type="password" required="required" />
+					<input id="confirm-password" name="confirmacaoDaSenha"
+						class="form-control" type="password" />
 				</div>
 			</div>
 
@@ -58,9 +67,9 @@
 				<label for="email" class="control-label col-md-3">E-mail</label>
 				<div class="col-md-9">
 					<input id="email" name="usuario.email" class="form-control"
-						type="email" aria-describedby="email-help" required="required" />
-					<span id="email-help" class="help-block">Informe um endereço
-						de e-mail válido para que possamos contatá-lo(a) sempre que
+						type="email" aria-describedby="email-help" /> <span
+						id="email-help" class="help-block">Informe um endereço de
+						e-mail válido para que possamos contatá-lo(a) sempre que
 						necessário.</span>
 				</div>
 			</div>
@@ -69,8 +78,8 @@
 				<label for="confirm-email" class="control-label col-md-3">Confirme
 					seu e-mail</label>
 				<div class="col-md-9">
-					<input id="confirm-email" class="form-control" type="email"
-						required="required" />
+					<input id="confirm-email" name="confirmacaoDoEmail"
+						class="form-control" type="email" />
 				</div>
 			</div>
 
@@ -78,8 +87,8 @@
 				<label for="security-question" class="control-label col-md-3">Escolha
 					uma pergunta de segurança</label>
 				<div class="col-md-9">
-					<select id="security-question" class="form-control" name=""
-						aria-describedby="security-question-help" required="required">
+					<select id="security-question" name="usuario.perguntaDeSeguranca"
+						class="form-control" aria-describedby="security-question-help">
 						<option value="">Selecione...</option>
 						<option
 							value="Qual era a profissão que você sonhava seguir quando criança?">Qual
@@ -137,8 +146,8 @@
 				<label for="answer" class="control-label col-md-3">Sua
 					resposta</label>
 				<div class="col-md-9">
-					<input id="answer" name="" class="form-control" type="text"
-						required="required" />
+					<input id="answer" name="usuario.respostaDaPerguntaDeSeguranca"
+						class="form-control" type="text">
 				</div>
 			</div>
 
