@@ -9,25 +9,25 @@
 <body>
 	<div class="col-md-6">
 		<h2>Navegue por nossas fontes de informação</h2>
-		<nav>
-			<ul class="list-group">
-				<li class="list-group-item"><a href="#">Folha de São Paulo
-						(Política)</a></li>
-
-				<li class="list-group-item"><a href="#">Folha de São Paulo
-						(Esportes)</a></li>
-
-				<li class="list-group-item"><a href="#">Folha de São Paulo
-						(Variedades)</a></li>
-
-				<li class="list-group-item"><a href="#">G1.com (Política)</a></li>
-				<li class="list-group-item"><a href="#">G1.com (Esportes)</a></li>
-			</ul>
-		</nav>
+		<c:choose>
+			<c:when test="${feeds.size() == 0}">
+				<p class="text-info">Não há feeds registrados no momento.</p>
+			</c:when>
+			<c:otherwise>
+				<nav>
+					<ul class="list-group">
+						<c:forEach var="feed" items="${feeds}">
+							<li class="list-group-item"><a href="#">${feed.titulo}
+									(${feed.categoria})</a></li>
+						</c:forEach>
+					</ul>
+				</nav>
+			</c:otherwise>
+		</c:choose>
 	</div>
 
 	<div class="col-md-6">
-		<h2>Confira as últimas notícias do dia</h2>
+		<h2>Últimas Notícias</h2>
 
 		<ul class="list-group">
 			<li class="list-group-item">
