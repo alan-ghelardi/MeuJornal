@@ -12,15 +12,7 @@
 	src="${pageContext.request.contextPath}/js/additional-methods.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/global-validation-settings.js"></script>
-<script>
-	$(function() {
-		$('#feeds-form').validate({
-			submitHandler : function(form) {
-				form.submit();
-			}
-		});
-	});
-</script>
+<script src="${pageContext.request.contextPath}/js/feeds.js"></script>
 </head>
 <body>
 	<div class="col-md-12">
@@ -69,21 +61,32 @@
 			</div>
 
 			<div class="form-group">
-				<label for="category" class="control-label col-md-3">Categoria</label>
+				<label for="categories" class="control-label col-md-3">Categoria</label>
 
 				<div class="col-md-9">
-					<select id="category" name="feed.categoria" class="form-control"
+					<select id="categories" name="categories" class="form-control"
 						aria-describedby="category-help" data-rule-required="true"
 						data-msg-required="Por favor, informe uma categoria para o Feed RSS.">
 						<option value="">Selecione...</option>
-						<option value="Cultura">Cultura</option>
-						<option value="Educação">Educação</option>
-						<option value="Entretenimento">Entretenimento</option>
-						<option value="Esportes">Esportes</option>
-						<option value="Política">Política</option>
-						<option value="Variedades">Variedades</option>
+						<c:forEach var="categoria" items="${categorias}">
+							<option value="${categoria}"
+								${categoria == feed.categoria ? 'selected' : ''}>${categoria}</option>
+						</c:forEach>
+						<option value="other">Outra</option>
 					</select> <span id="category-help" class="help-block">Escolha uma das
-						categorias para o portal de notícias.</span>
+						categorias para o portal de notícias. Caso queira criar uma nova
+						categoria, escolha a opção Outra.</span>
+				</div>
+			</div>
+
+			<div class="form-group" style="display: none;">
+				<label for="new-category" class="control-label col-md-3">Nome
+					da categoria</label>
+				<div class="col-md-9">
+					<input id="new-category" name="newCategory" class="form-control"
+						type="text" data-rule-required="true" data-rule-maxlength="60"
+						data-msg-required="Por favor, informe o nome da categoria."
+						data-msg-maxlength="Valor longo demais. Por favor, digite no máximo {0} caracteres." />
 				</div>
 			</div>
 

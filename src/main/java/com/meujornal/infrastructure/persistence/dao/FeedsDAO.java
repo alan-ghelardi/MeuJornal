@@ -39,4 +39,9 @@ public class FeedsDAO {
 		return entityManager.createQuery(query, Feed.class).getResultList();
 	}
 
+	public Collection<String> buscarTodasAsCategoriasExistentes() {
+		final String query = "SELECT feed.categoria FROM Feed AS feed ORDER BY feed.categoria";
+		return entityManager.createQuery(query, String.class).getResultList();
+	}
+
 }

@@ -36,7 +36,8 @@ public class AdminController {
 
 	@Get("/admin/novo-feed")
 	public void formulario() {
-
+		result.include("categorias",
+				feedsDAO.buscarTodasAsCategoriasExistentes());
 	}
 
 	@Post("/admin/feeds")
@@ -56,7 +57,10 @@ public class AdminController {
 		if (feed == null) {
 			result.notFound();
 		} else {
-			result.include("feed", feed).of(this).formulario();
+			result.include("feed", feed)
+					.include("categorias",
+							feedsDAO.buscarTodasAsCategoriasExistentes())
+					.of(this).formulario();
 		}
 	}
 
