@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/entrar", "/registrar/**", "/css/**",
 						"/fonts/**", "/js/**").permitAll()
-				.antMatchers("/admin/**").hasRole("ADMINISTRADOR").anyRequest()
+				.antMatchers("/admin/**").hasRole("Administrator").anyRequest()
 				.authenticated().and().formLogin().loginPage("/entrar")
 				.loginProcessingUrl("/entrar").failureUrl("/entrar?error=true")
 				.defaultSuccessUrl("/").usernameParameter("nomeDeUsuario")

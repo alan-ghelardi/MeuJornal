@@ -1,12 +1,9 @@
 package com.meujornal.models.usuarios;
 
-import static javax.persistence.EnumType.STRING;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -47,8 +44,7 @@ public class Usuario implements Serializable {
 	@Column(unique = true)
 	private String email;
 	@NotNull
-	@Enumerated(STRING)
-	private Papel papel = Papel.USUARIO;
+	private Role papel = Role.ADMINISTRATOR;
 	@NotBlank
 	private String perguntaDeSeguranca;
 	@NotBlank
@@ -90,11 +86,11 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public Papel getPapel() {
+	public Role getPapel() {
 		return papel;
 	}
 
-	public void setPapel(Papel papel) {
+	public void setPapel(Role papel) {
 		this.papel = papel;
 	}
 

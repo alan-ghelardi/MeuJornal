@@ -6,6 +6,13 @@ import javax.inject.Inject;
 import br.com.caelum.vraptor.http.FormatResolver;
 import br.com.caelum.vraptor.view.DefaultPathResolver;
 
+/**
+ * Sobrescreve as convenções do VRaptor para a resolução das views a partir do
+ * diretório /WEB-INF/views.
+ * 
+ * @author Alan Ghelardi
+ *
+ */
 @Specializes
 class CustomPathResolver extends DefaultPathResolver {
 
@@ -16,7 +23,7 @@ class CustomPathResolver extends DefaultPathResolver {
 
 	@Override
 	protected String getPrefix() {
-		return "WEB-INF/views/";
+		return "/WEB-INF/views/";
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.meujornal.infrastructure.persistence;
+package com.meujornal.infrastructure.persistence.dao;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

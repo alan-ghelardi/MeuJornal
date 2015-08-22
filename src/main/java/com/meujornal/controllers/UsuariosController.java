@@ -11,7 +11,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.validator.Validator;
 import static br.com.caelum.vraptor.view.Results.*;
 
-import com.meujornal.infrastructure.persistence.UsuariosDAO;
+import com.meujornal.infrastructure.persistence.dao.UsuariosDAO;
 import com.meujornal.models.usuarios.Usuario;
 
 @Controller
