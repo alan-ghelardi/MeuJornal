@@ -10,15 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.meujornal.infrastructure.persistence.settings.DatabaseSettings;
+
 /**
  * Esta classe é responsável por configurar o Spring Security Framework.
  */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	private static final String URL = "jdbc:h2:~/MeuJornal";
-	private static final String USERNAME = "admin";
-	private static final String PASSWORD = "123456";
 
 	@Autowired
 	public void globalSecurityConfiguration(AuthenticationManagerBuilder auth)
@@ -33,8 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private DataSource dataSource() {
-		DataSource dataSource = new DriverManagerDataSource(URL, USERNAME,
-				PASSWORD);
+		DatabaseSettings settings = new DatabaseSettings();
+
+		DataSource dataSource = new DriverManagerDataSource(
+				settings.getJdbcUrl(), settings.getUsername(),
+				settings.getPassword());
 		return dataSource;
 	}
 
