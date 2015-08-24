@@ -53,68 +53,84 @@ public class Usuario implements Serializable {
 	@NotBlank
 	private String respostaDaPerguntaDeSeguranca;
 
+	// Retorna o id do usuário
 	public Long getId() {
 		return id;
 	}
 
+	// Retorna o login do usuário
 	public String getNome() {
 		return nome;
 	}
 
+	// Atribui um login ao usuário
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
+	// Retorna o id do usuário
 	public String getNomeDeUsuario() {
 		return nomeDeUsuario;
 	}
 
+	// Atribui um nome ao usuário
 	public void setNomeDeUsuario(String nomeDeUsuario) {
 		this.nomeDeUsuario = nomeDeUsuario;
 	}
 
+	// Retorna a senha do usuário
 	public String getSenha() {
 		return senha;
 	}
 
+	// Atribui uma senha ao usuário
 	public void setSenha(String senha) {
 		this.senha = SensitiveDataEncoder.encode(senha);
 	}
 
+	// Retorna o e-mail do usuário
 	public String getEmail() {
 		return email;
 	}
 
+	// Atribui um endereço de e-mail ao usuário
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	// Retorna o papel participativo no sistema do usuário
 	public Role getPapel() {
 		return papel;
 	}
 
+	// Atribui um papel participativo ao usuário
 	public void setPapel(Role papel) {
 		this.papel = papel;
 	}
 
+	// Retorna a pergunta de segurança do usuário
 	public String getPerguntaDeSeguranca() {
 		return perguntaDeSeguranca;
 	}
 
+	// Atribui uma pergunta de segurança ao usuário
 	public void setPerguntaDeSeguranca(String perguntaDeSeguranca) {
 		this.perguntaDeSeguranca = perguntaDeSeguranca;
 	}
 
+	// Retorna a resposta para a pergunta de segurança do usuário
 	public String getRespostaDaPerguntaDeSeguranca() {
 		return respostaDaPerguntaDeSeguranca;
 	}
 
+	// Atribui uma resposta à pergunta de segurança do usuário
 	public void setRespostaDaPerguntaDeSeguranca(
 			String respostaDaPerguntaDeSeguranca) {
 		this.respostaDaPerguntaDeSeguranca = SensitiveDataEncoder
 				.encode(respostaDaPerguntaDeSeguranca);
 	}
 
+	// Retorna a string que está relaciona ao objeto Usuario
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).addValue(nome)
