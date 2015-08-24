@@ -23,12 +23,14 @@ public enum Role {
 		}
 	}
 
+	// Retorna um objeto de papel participativo no sistema a partir de uma string
 	public static Role fromString(String name) {
 		Preconditions.checkArgument(stringToConstantValue.containsKey(name),
 				"%s is an invalid name for enum.", name);
 		return stringToConstantValue.get(name);
 	}
 
+	// Retorna uma string, descrevendo o papel participativo atualmente associado à entidade
 	@Override
 	public String toString() {
 		return "ROLE_" + this.name().charAt(0)
