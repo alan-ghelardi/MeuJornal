@@ -58,22 +58,22 @@ public class Usuario implements Serializable {
 		return id;
 	}
 
-	// Retorna o login do usuário
+	// Retorna o nome do usuário
 	public String getNome() {
 		return nome;
 	}
 
-	// Atribui um login ao usuário
+	// Atribui um nome ao usuário
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
-	// Retorna o id do usuário
+	// Retorna o login do usuário
 	public String getNomeDeUsuario() {
 		return nomeDeUsuario;
 	}
 
-	// Atribui um nome ao usuário
+	// Atribui um login ao usuário
 	public void setNomeDeUsuario(String nomeDeUsuario) {
 		this.nomeDeUsuario = nomeDeUsuario;
 	}
