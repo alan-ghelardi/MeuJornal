@@ -23,6 +23,7 @@ public class CustomEntityManagerFactoryCreator extends
 	private static final org.slf4j.Logger logger = LoggerFactory
 			.getLogger(CustomEntityManagerFactoryCreator.class);
 
+	// Fábrica do gerenciador de entidades
 	@Override
 	@ApplicationScoped
 	@Produces
@@ -45,6 +46,7 @@ public class CustomEntityManagerFactoryCreator extends
 		return Persistence.createEntityManagerFactory("default", overrides);
 	}
 
+	// Descarta a fábrica
 	@Override
 	public void destroy(@Disposes EntityManagerFactory factory) {
 		super.destroy(factory);
