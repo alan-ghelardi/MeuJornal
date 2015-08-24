@@ -13,11 +13,13 @@ import com.meujornal.models.usuarios.Role;
 @Converter
 public final class RoleConverter implements AttributeConverter<Role, String> {
 
+	// Recebe um objeto Role e converte para coluna do banco de dados
 	@Override
 	public String convertToDatabaseColumn(Role role) {
 		return role.toString();
 	}
 
+	// Recebe uma string e converte para um obejto Role
 	@Override
 	public Role convertToEntityAttribute(String value) {
 		return Role.fromString(value);
