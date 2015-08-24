@@ -24,15 +24,18 @@ public class UsuariosController {
 	@Inject
 	private UsuariosDAO usuariosDAO;
 
+	// Redireciona à página de entrada
 	@Get("/entrar")
 	public void entrar() {
 	}
 
+	// Redireciona à página de registro
 	@Get("/registrar")
 	public void registrar() {
 
 	}
 
+	// Redireciona à página de registro e registra um novo usuário
 	@Post("/registrar")
 	public void registrar(@Valid Usuario usuario) {
 		validator.onErrorRedirectTo(this).registrar();
@@ -41,6 +44,7 @@ public class UsuariosController {
 		result.redirectTo(HomeController.class).index();
 	}
 
+	// Checa se o usuário já existe
 	@Get("/registrar/checar-usuario")
 	@Consumes("application/json")
 	public void checarSeOUsuarioExiste(String q) {
