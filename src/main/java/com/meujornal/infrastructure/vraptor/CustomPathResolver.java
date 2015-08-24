@@ -16,11 +16,13 @@ import br.com.caelum.vraptor.view.DefaultPathResolver;
 @Specializes
 class CustomPathResolver extends DefaultPathResolver {
 
+	// Gera um novo resolvedor de caminhos para as views
 	@Inject
 	protected CustomPathResolver(FormatResolver resolver) {
 		super(resolver);
 	}
 
+	// Retorna o prefixo que deve ser considerado na resolução de caminhos
 	@Override
 	protected String getPrefix() {
 		return "/WEB-INF/views/";
