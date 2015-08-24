@@ -26,38 +26,47 @@ public class Feed {
 	@Size(max = 1000)
 	private String descricao;
 
+	// Retorna o id do feed
 	public Long getId() {
 		return id;
 	}
 
+	// Retorna o título do feed
 	public String getTitulo() {
 		return titulo;
 	}
 
+	// Atribui um título ao feed
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
 
+	// Retorna um link para um feed
 	public String getLink() {
 		return link;
 	}
 
+	// Atribui um link para um feed
 	public void setLink(String uRL) {
 		link = uRL;
 	}
 
+	// Retorna a categoria relacionada ao feed
 	public String getCategoria() {
 		return categoria;
 	}
 
+	// Relaciona uma categoria ao feed
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
 
+	// Retorna a descrição do feed
 	public String getDescricao() {
 		return descricao;
 	}
 
+	// Atribui uma descrição ao feed
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
