@@ -16,6 +16,7 @@ public class HomeController {
 	@Inject
 	private FeedsDAO feedsDAO;
 
+	// Indexa todos os feeds
 	@Get("/")
 	public void index() {
 		result.include("feeds", feedsDAO.buscarTodos());
