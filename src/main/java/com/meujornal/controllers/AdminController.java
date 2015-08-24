@@ -29,17 +29,20 @@ public class AdminController {
 	@Inject
 	private FeedsDAO feedsDAO;
 
+	// Indexa todos os feeds
 	@Get("/admin")
 	public void index() {
 		result.include("feeds", feedsDAO.buscarTodos());
 	}
 
+	// Gera um novo formulário para cadastro de feed, considerando as categorias existentes
 	@Get("/admin/novo-feed")
 	public void formulario() {
 		result.include("categorias",
 				feedsDAO.buscarTodasAsCategoriasExistentes());
 	}
 
+	// Recebe um objeto Feed e cria um novo feed
 	@Post("/admin/feeds")
 	public void criarFeed(@Valid Feed feed) {
 		validator.onErrorRedirectTo(this).formulario();
@@ -50,6 +53,7 @@ public class AdminController {
 						feed.getTitulo())).redirectTo(this).index();
 	}
 
+	// Recebe o id de um feed e o edita
 	@Get("/admin/editar-feed/{id}")
 	public void editarFeed(Long id) {
 		Feed feed = feedsDAO.buscarPorId(id);
@@ -64,6 +68,7 @@ public class AdminController {
 		}
 	}
 
+	// Recebe o id e um objeto Feed e o edita
 	@Post("/admin/feeds/{id}")
 	public void editarFeed(Long id, @Valid Feed feed) {
 		if (!feedsDAO.existeFeedComId(id)) {
@@ -78,6 +83,7 @@ public class AdminController {
 		}
 	}
 
+	// Recebe o id de um feed e o assinala para visualização
 	@Get("/admin/feeds/{id}")
 	public void visualizar(Long id) {
 		Feed feed = feedsDAO.buscarPorId(id);
@@ -88,6 +94,7 @@ public class AdminController {
 		}
 	}
 
+	// Recebe o id de um feed e o remove
 	@Delete("/admin/feeds/{id}")
 	public void removerFeed(Long id) {
 		Feed feed = feedsDAO.buscarPorId(id);
