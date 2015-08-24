@@ -3,6 +3,7 @@ package com.meujornal.models.usuarios;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.google.common.base.Objects;
+import com.meujornal.infrastructure.persistence.converters.RoleConverter;
 
 /**
  * Representa um usuário no contexto do sistema.
@@ -44,7 +46,8 @@ public class Usuario implements Serializable {
 	@Column(unique = true)
 	private String email;
 	@NotNull
-	private Role papel = Role.ADMINISTRATOR;
+	@Convert(converter = RoleConverter.class)
+	private Role papel = Role.USER;
 	@NotBlank
 	private String perguntaDeSeguranca;
 	@NotBlank

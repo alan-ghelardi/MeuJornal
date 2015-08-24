@@ -10,7 +10,7 @@ import com.meujornal.models.usuarios.Role;
  * vice-versa, respeitando a convenção padrão do Spring Security para roles.
  * 
  */
-@Converter(autoApply = true)
+@Converter
 public final class RoleConverter implements AttributeConverter<Role, String> {
 
 	@Override
