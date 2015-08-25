@@ -6,6 +6,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<description>Sistema para a disciplina de Desenvolvimento de Projetos do Bacharelado em Sistemas de Informação da Universidade Federal de São Carlos</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
