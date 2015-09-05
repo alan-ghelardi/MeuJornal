@@ -8,10 +8,10 @@ public class Noticia {
 
 	private Long id;
 	private String titulo;
-	private String autor;
 	private LocalDateTime dataDePublicacao;
 	private String link;
 	private String descricao;
+	private Feed feed;
 
 	public Long getId() {
 		return id;
@@ -23,14 +23,6 @@ public class Noticia {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
-	}
-
-	public String getAutor() {
-		return autor;
-	}
-
-	public void setAutor(String autor) {
-		this.autor = autor;
 	}
 
 	public LocalDateTime getDataDePublicacao() {
@@ -57,10 +49,18 @@ public class Noticia {
 		this.descricao = descricao;
 	}
 
+	public Feed getFeed() {
+		return feed;
+	}
+
+	public void setFeed(Feed feed) {
+		this.feed = feed;
+	}
+
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("titulo", titulo)
-				.omitNullValues().add("autor", autor)
+		return Objects.toStringHelper(this).omitNullValues()
+				.add("titulo", titulo)
 				.add("dataDePublicacao", dataDePublicacao).add("link", link)
 				.add("descricao", descricao).toString();
 	}
