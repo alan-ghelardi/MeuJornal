@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meujornal.infrastructure.shared.CustomThreadPool;
 import com.meujornal.models.noticias.Feed;
 import com.meujornal.models.noticias.Noticia;
 import com.rometools.rome.io.SyndFeedInput;
@@ -25,7 +26,7 @@ import com.rometools.rome.io.SyndFeedInput;
  *
  */
 @ApplicationScoped
-public final class ConsumidorDeRSS {
+public class ConsumidorDeRSS {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ConsumidorDeRSS.class);
@@ -41,7 +42,7 @@ public final class ConsumidorDeRSS {
 	}
 
 	@Inject
-	public ConsumidorDeRSS(ExecutorService threadPool) {
+	public ConsumidorDeRSS(@CustomThreadPool ExecutorService threadPool) {
 		this.threadPool = threadPool;
 		this.feedInput = new SyndFeedInput();
 	}

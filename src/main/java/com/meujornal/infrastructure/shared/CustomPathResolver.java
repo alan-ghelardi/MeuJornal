@@ -1,4 +1,4 @@
-package com.meujornal.infrastructure.vraptor;
+package com.meujornal.infrastructure.shared;
 
 import javax.enterprise.inject.Specializes;
 import javax.inject.Inject;

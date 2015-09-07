@@ -1,4 +1,4 @@
-package com.meujornal.infrastructure.vraptor;
+package com.meujornal.infrastructure.shared;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,7 @@ import javax.enterprise.inject.Specializes;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.jpa.EntityManagerFactoryCreator;
@@ -20,7 +21,7 @@ import com.meujornal.infrastructure.persistence.settings.DatabaseSettings;
 public class CustomEntityManagerFactoryCreator extends
 		EntityManagerFactoryCreator {
 
-	private static final org.slf4j.Logger logger = LoggerFactory
+	private static final Logger logger = LoggerFactory
 			.getLogger(CustomEntityManagerFactoryCreator.class);
 
 	// Fábrica do gerenciador de entidades
