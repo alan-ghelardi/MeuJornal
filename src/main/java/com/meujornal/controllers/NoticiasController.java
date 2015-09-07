@@ -3,6 +3,7 @@ package com.meujornal.controllers;
 import static br.com.caelum.vraptor.view.Results.status;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -15,10 +16,12 @@ import com.meujornal.infrastructure.persistence.dao.FeedsDAO;
 import com.meujornal.infrastructure.persistence.dao.NoticiasDAO;
 import com.meujornal.models.noticias.Feed;
 import com.meujornal.models.noticias.Noticia;
-import com.meujornal.services.rss.ConsumidorDeRSS;
+import com.meujornal.services.rss.RSSConsumer;
 
 /**
- * Controller responsável por buscar e persistir novas notícias.
+ * Controller responsável por buscar e persistir novas notícias. Este controller
+ * implementa a interface {@link CromTask} e será invocado periodicamente pelo
+ * plug-in VRaptor Quartz-Jobs.
  */
 @Controller
 public class NoticiasController implements CronTask {
@@ -26,7 +29,7 @@ public class NoticiasController implements CronTask {
 	@Inject
 	private Result result;
 	@Inject
-	private ConsumidorDeRSS consumidorDeRSS;
+	private RSSConsumer consumer;
 	@Inject
 	private FeedsDAO feedsDAO;
 	@Inject
@@ -41,9 +44,10 @@ public class NoticiasController implements CronTask {
 	@Post("/jobs/find-news")
 	public void execute() {
 		Collection<Feed> feeds = feedsDAO.buscarTodos();
-		Collection<Noticia> noticias = consumidorDeRSS
-				.consumirNoticiasPublicadasPor(feeds);
+		List<Noticia> noticias = consumer.getLatestPublishedNewsFrom(feeds);
+
 		noticias.forEach(noticiasDAO::salvar);
+		feeds.forEach(feedsDAO::atualizar);
 
 		result.use(status()).ok();
 	}

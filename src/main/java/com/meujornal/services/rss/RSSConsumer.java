@@ -26,10 +26,10 @@ import com.rometools.rome.io.SyndFeedInput;
  *
  */
 @ApplicationScoped
-public class ConsumidorDeRSS {
+public class RSSConsumer {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(ConsumidorDeRSS.class);
+			.getLogger(RSSConsumer.class);
 
 	private final ExecutorService threadPool;
 	private final SyndFeedInput feedInput;
@@ -37,43 +37,39 @@ public class ConsumidorDeRSS {
 	/**
 	 * @deprecated CDI eyes only
 	 */
-	public ConsumidorDeRSS() {
+	public RSSConsumer() {
 		this(null);
 	}
 
 	@Inject
-	public ConsumidorDeRSS(@CustomThreadPool ExecutorService threadPool) {
+	public RSSConsumer(@CustomThreadPool ExecutorService threadPool) {
 		this.threadPool = threadPool;
 		this.feedInput = new SyndFeedInput();
 	}
 
-	public Collection<Noticia> consumirNoticiasPublicadasPor(
-			Collection<Feed> feeds) {
-		List<Noticia> noticias = new ArrayList<>();
-		List<ConsumidorDeNoticias> tarefas = feeds.stream()
-				.map(feed -> new ConsumidorDeNoticias(feedInput, feed))
+	public List<Noticia> getLatestPublishedNewsFrom(Collection<Feed> feeds) {
+		List<Noticia> latestNews = new ArrayList<>();
+		List<NewsSearcher> tasks = feeds.stream()
+				.map(feed -> new NewsSearcher(feedInput, feed))
 				.collect(toList());
 
 		try {
-			threadPool
-					.invokeAll(tarefas)
-					.forEach(
-							tarefaFutura -> aguardeAteTerminarEntaoArmazeneAsNoticiasConsumidas(
-									tarefaFutura, noticias));
+			threadPool.invokeAll(tasks).forEach(
+					future -> awaitUntilFinishingThenSaveTheNews(future,
+							latestNews));
 		} catch (InterruptedException e) {
 			logger.error(
 					"The execution was interrupted abruptly. Details bellow:",
 					e);
 		}
 
-		return noticias;
+		return latestNews;
 	}
 
-	private void aguardeAteTerminarEntaoArmazeneAsNoticiasConsumidas(
-			Future<Collection<Noticia>> tarefaFutura,
-			Collection<Noticia> noticias) {
+	private void awaitUntilFinishingThenSaveTheNews(
+			Future<List<Noticia>> future, List<Noticia> news) {
 		try {
-			noticias.addAll(tarefaFutura.get());
+			news.addAll(future.get());
 		} catch (InterruptedException | ExecutionException e) {
 			logger.error(
 					"An error occurred during the attempt to consume news. See the stack trace bellow for details:",

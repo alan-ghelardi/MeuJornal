@@ -3,6 +3,7 @@ package com.meujornal.models.noticias;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -25,6 +26,8 @@ public class Feed {
 	@NotBlank
 	@Size(max = 1000)
 	private String descricao;
+	@OneToOne
+	private Noticia noticiaMaisRecente;
 
 	// Retorna o id do feed
 	public Long getId() {
@@ -69,6 +72,14 @@ public class Feed {
 	// Atribui uma descrição ao feed
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Noticia getNoticiaMaisRecente() {
+		return noticiaMaisRecente;
+	}
+
+	public void setNoticiaMaisRecente(Noticia noticiaMaisRecente) {
+		this.noticiaMaisRecente = noticiaMaisRecente;
 	}
 
 }

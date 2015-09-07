@@ -29,7 +29,8 @@ public class FeedsDAO {
 		entityManager.remove(feed);
 	}
 
-	// Recebe um id e retorna verdadeiro caso exista um feed com tal id, e falso c.c.
+	// Recebe um id e retorna verdadeiro caso exista um feed com tal id, e falso
+	// c.c.
 	public boolean existeFeedComId(Long id) {
 		return buscarPorId(id) != null;
 	}
