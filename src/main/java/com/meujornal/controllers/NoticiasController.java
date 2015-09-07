@@ -36,6 +36,8 @@ public class NoticiasController implements CronTask {
 		Collection<Noticia> noticias = consumidorDeRSS
 				.consumirNoticiasPublicadasPor(feeds);
 
+		noticias.forEach(System.out::println);
+
 		result.use(status()).ok();
 	}
 
