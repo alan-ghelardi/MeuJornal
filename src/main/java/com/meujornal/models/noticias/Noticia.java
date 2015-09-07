@@ -1,16 +1,44 @@
 package com.meujornal.models.noticias;
 
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
+
 import java.time.LocalDateTime;
 
-import com.google.common.base.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
+import com.google.common.base.Objects;
+import com.meujornal.infrastructure.persistence.converters.LocalDateTimeConverter;
+
+@Entity
 public class Noticia {
 
+	@Id
+	@GeneratedValue
 	private Long id;
+	@NotBlank
 	private String titulo;
+	@NotNull
+	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime dataDePublicacao;
+	@NotBlank
+	@URL
 	private String link;
+	@Lob
+	@Basic
 	private String descricao;
+	@ManyToOne(optional = false)
+	@OnDelete(action = CASCADE)
 	private Feed feed;
 
 	public Long getId() {

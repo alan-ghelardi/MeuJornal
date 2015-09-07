@@ -9,6 +9,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 
 		<class>com.meujornal.models.usuarios.Usuario</class>
 		<class>com.meujornal.models.noticias.Feed</class>
+		<class>com.meujornal.models.noticias.Noticia</class>
 
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

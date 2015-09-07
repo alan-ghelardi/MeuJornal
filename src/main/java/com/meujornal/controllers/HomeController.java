@@ -7,6 +7,7 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Result;
 
 import com.meujornal.infrastructure.persistence.dao.FeedsDAO;
+import com.meujornal.infrastructure.persistence.dao.NoticiasDAO;
 
 @Controller
 public class HomeController {
@@ -15,11 +16,13 @@ public class HomeController {
 	private Result result;
 	@Inject
 	private FeedsDAO feedsDAO;
+	@Inject
+	private NoticiasDAO NoticiasDAO;
 
-	// Indexa todos os feeds
 	@Get("/")
 	public void index() {
-		result.include("feeds", feedsDAO.buscarTodos());
+		result.include("feeds", feedsDAO.buscarTodos()).include("noticias",
+				NoticiasDAO.buscar(15));
 	}
 
 }

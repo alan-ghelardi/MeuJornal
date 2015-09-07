@@ -29,109 +29,21 @@
 	<div class="col-md-6">
 		<h2>Últimas Notícias</h2>
 
-		<ul class="list-group">
-			<li class="list-group-item">
-				<article>
-					<header>
-						<h3>Lorem ipsum</h3>
-						<p>Publicado em 09/07/2015 no Jornal XYZ</p>
-					</header>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-						enim ad minim veniam, quis nostrud exercitation ullamco laboris
-						nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-						reprehenderit in voluptate velit...</p>
-					<p>
-						<a href="#">Ler completo</a>
-					</p>
-				</article>
-			</li>
-
-			<li class="list-group-item">
-				<article>
-					<header>
-						<h3>Lorem ipsum</h3>
-						<p>Publicado em 09/07/2015 no Jornal XYZ</p>
-					</header>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-						enim ad minim veniam, quis nostrud exercitation ullamco laboris
-						nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-						reprehenderit in voluptate velit...</p>
-					<p>
-						<a href="#">Ler completo</a>
-					</p>
-				</article>
-			</li>
-
-			<li class="list-group-item">
-				<article>
-					<header>
-						<h3>Lorem ipsum</h3>
-						<p>Publicado em 09/07/2015 no Jornal XYZ</p>
-					</header>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-						enim ad minim veniam, quis nostrud exercitation ullamco laboris
-						nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-						reprehenderit in voluptate velit...</p>
-					<p>
-						<a href="#">Ler completo</a>
-					</p>
-				</article>
-			</li>
-
-			<li class="list-group-item">
-				<article>
-					<header>
-						<h3>Lorem ipsum</h3>
-						<p>Publicado em 09/07/2015 no Jornal XYZ</p>
-					</header>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-						enim ad minim veniam, quis nostrud exercitation ullamco laboris
-						nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-						reprehenderit in voluptate velit...</p>
-					<p>
-						<a href="#">Ler completo</a>
-					</p>
-				</article>
-			</li>
-
-			<li class="list-group-item">
-				<article>
-					<header>
-						<h3>Lorem ipsum</h3>
-						<p>Publicado em 09/07/2015 no Jornal XYZ</p>
-					</header>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-						enim ad minim veniam, quis nostrud exercitation ullamco laboris
-						nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-						reprehenderit in voluptate velit...</p>
-					<p>
-						<a href="#">Ler completo</a>
-					</p>
-				</article>
-			</li>
-
-			<li class="list-group-item">
-				<article>
-					<header>
-						<h3>Lorem ipsum</h3>
-						<p>Publicado em 09/07/2015 no Jornal XYZ</p>
-					</header>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-						do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-						enim ad minim veniam, quis nostrud exercitation ullamco laboris
-						nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-						reprehenderit in voluptate velit...</p>
-					<p>
-						<a href="#">Ler completo</a>
-					</p>
-				</article>
-			</li>
-		</ul>
+		<c:forEach var="noticia" items="${noticias}">
+			<ol class="list-group">
+				<li class="list-group-item">
+					<article>
+						<header>
+							<h3>
+								<a href="${noticia.link}">${noticia.titulo}</a>
+							</h3>
+							<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}</p>
+						</header>
+						<p>${noticia.descricao}</p>
+					</article>
+				</li>
+			</ol>
+		</c:forEach>
 	</div>
 </body>
 </html>
