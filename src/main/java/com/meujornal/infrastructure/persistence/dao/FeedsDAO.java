@@ -11,8 +11,19 @@ import com.meujornal.models.noticias.Feed;
 @RequestScoped
 public class FeedsDAO {
 
+	private final EntityManager entityManager;
+
+	/**
+	 * @deprecated CDI eyes only.
+	 */
+	FeedsDAO() {
+		this(null);
+	}
+
 	@Inject
-	private EntityManager entityManager;
+	public FeedsDAO(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	// Recebe um objeto Feed e o persiste
 	public void salvar(Feed feed) {

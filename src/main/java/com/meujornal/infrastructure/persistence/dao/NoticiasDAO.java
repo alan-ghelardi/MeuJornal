@@ -11,8 +11,19 @@ import com.meujornal.models.noticias.Noticia;
 @RequestScoped
 public class NoticiasDAO {
 
+	private final EntityManager entityManager;
+
+	/**
+	 * @deprecated CDI eyes only.
+	 */
+	NoticiasDAO() {
+		this(null);
+	}
+
 	@Inject
-	private EntityManager entityManager;
+	public NoticiasDAO(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	public void salvar(Noticia noticia) {
 		entityManager.persist(noticia);
