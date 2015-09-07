@@ -29,20 +29,20 @@
 	<div class="col-md-6">
 		<h2>Últimas Notícias</h2>
 
-		<c:forEach var="noticia" items="${noticias}">
-			<ol class="list-group">
+		<c:forEach var="noticia" items="${noticias}" varStatus="loop">
+			<ul class="list-group">
 				<li class="list-group-item">
 					<article>
 						<header>
-							<h3>
-								<a href="${noticia.link}">${noticia.titulo}</a>
+							<h3>${loop.index + 1}.
+								<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
 							</h3>
 							<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}</p>
 						</header>
 						<p>${noticia.descricao}</p>
 					</article>
 				</li>
-			</ol>
+			</ul>
 		</c:forEach>
 	</div>
 </body>
