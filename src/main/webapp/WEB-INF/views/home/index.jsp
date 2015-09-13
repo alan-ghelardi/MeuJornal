@@ -17,7 +17,8 @@
 				<nav>
 					<ul class="list-group">
 						<c:forEach var="feed" items="${feeds}">
-							<li class="list-group-item"><a href="#">${feed.titulo}
+							<li class="list-group-item"><a
+								href="${pageContext.request.contextPath}/feeds/${feed.id}">${feed.titulo}
 									(${feed.categoria})</a></li>
 						</c:forEach>
 					</ul>
@@ -37,7 +38,8 @@
 							<h3>${loop.index + 1}.
 								<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
 							</h3>
-							<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}</p>
+							<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
+								(${noticia.feed.categoria})</p>
 						</header>
 						<p>${noticia.descricao}</p>
 					</article>
