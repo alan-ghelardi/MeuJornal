@@ -50,7 +50,7 @@
 					<ul class="nav navbar-nav">
 						<li><a href="${linkTo[HomeController].index}"><i
 								class="glyphicon glyphicon-home"></i> Home</a></li>
-						<li><a href="#">Sobre</a></li>
+						<li><a href="${linkTo[SobreController].index}">Sobre</a></li>
 						<sec:authorize access="hasRole('Administrator')">
 							<li><a href="${linkTo[AdminController].index}">Administração</a></li>
 						</sec:authorize>
