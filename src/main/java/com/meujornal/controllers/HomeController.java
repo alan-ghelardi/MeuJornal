@@ -21,8 +21,8 @@ public class HomeController {
 
 	@Get("/")
 	public void index() {
-		result.include("feeds", feedsDAO.buscarTodos()).include("noticias",
-				NoticiasDAO.buscar(15));
+		result.include("feeds", feedsDAO.buscarTodos()).include("groups",
+				NoticiasDAO.agruparUltimasNoticiasSegundoSuasCategorias(10));
 	}
 
 }
