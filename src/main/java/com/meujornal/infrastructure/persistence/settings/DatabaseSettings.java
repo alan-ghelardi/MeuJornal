@@ -1,5 +1,13 @@
 package com.meujornal.infrastructure.persistence.settings;
 
+/**
+ * Provê as configurações do banco de dados. Internamente utiliza o pattern
+ * state para alternar entre as configurações de desenvolvimento e de produção
+ * dependendo da presença ou não da variável de sistema DATABASE_URL.
+ * 
+ * @author Alan Ghelardi
+ *
+ */
 public final class DatabaseSettings {
 
 	private static final String ENVIRONMENT_VARIABLE = "DATABASE_URL";
@@ -8,7 +16,8 @@ public final class DatabaseSettings {
 
 	public DatabaseSettings() {
 		if (isInDeployEnvironment()) {
-			settings = new DeploymentSettings();
+			settings = new DeploymentSettings(
+					System.getenv(ENVIRONMENT_VARIABLE));
 		} else {
 			settings = new DevelopmentSettings();
 		}

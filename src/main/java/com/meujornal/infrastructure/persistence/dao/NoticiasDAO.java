@@ -4,7 +4,6 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import com.meujornal.infrastructure.persistence.common.CategoryAndQuantity;
+import com.meujornal.infrastructure.persistence.common.NewsAndTheirCount;
 import com.meujornal.models.noticias.Feed;
 import com.meujornal.models.noticias.Noticia;
 
@@ -37,12 +37,25 @@ public class NoticiasDAO {
 		entityManager.persist(noticia);
 	}
 
-	public Collection<Noticia> buscarTodasRelacionadasA(Feed feed, int quantas) {
+	public NewsAndTheirCount buscarTodasRelacionadasA(Feed feed,
+			int comecandoEm, int quantas) {
 		String query = "SELECT noticia FROM Noticia AS noticia WHERE noticia.feed = :feed ORDER BY noticia.dataDePublicacao DESC";
 
-		return entityManager.createQuery(query, Noticia.class)
+		List<Noticia> noticias = entityManager
+				.createQuery(query, Noticia.class).setFirstResult(comecandoEm)
 				.setParameter("feed", feed).setMaxResults(quantas)
 				.getResultList();
+
+		long contagem = contarNoticiasRelacionadasA(feed);
+
+		return new NewsAndTheirCount(noticias, contagem);
+	}
+
+	private long contarNoticiasRelacionadasA(Feed feed) {
+		String query = "SELECT COUNT(noticia) FROM Noticia AS noticia WHERE noticia.feed = :feed";
+
+		return entityManager.createQuery(query, Long.class)
+				.setParameter("feed", feed).getSingleResult();
 	}
 
 	public Map<CategoryAndQuantity, List<Noticia>> agruparUltimasNoticiasSegundoSuasCategorias(

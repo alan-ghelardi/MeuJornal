@@ -1,6 +1,13 @@
 package com.meujornal.infrastructure.persistence.settings;
 
-class DevelopmentSettings implements EnvironmentSettings {
+/**
+ * Provê as configurações para o uso do H2 Database no ambiente de
+ * desenvolvimento.
+ * 
+ * @author Alan Ghelardi
+ *
+ */
+final class DevelopmentSettings implements EnvironmentSettings {
 
 	@Override
 	public String getUsername() {

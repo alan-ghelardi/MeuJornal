@@ -54,12 +54,12 @@ public class NoticiasController implements CronTask {
 
 	/**
 	 * Define a periodicidade em que as notícias serão procuradas. Atualmente, a
-	 * busca é disparada a cada 45 minutos. Note que a configuração segue o
+	 * busca é disparada a cada 30 minutos. Note que a configuração segue o
 	 * padrão do Crom.
 	 */
 	@Override
 	public String frequency() {
-		return "0 0/3 * * * ?";
+		return "0 0/30 * * * ?";
 	}
 
 }

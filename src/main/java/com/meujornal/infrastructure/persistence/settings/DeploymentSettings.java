@@ -3,13 +3,18 @@ package com.meujornal.infrastructure.persistence.settings;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Representa as configurações do banco de dados no ambiente de produção
+ * (atualmente, o Heroku). Provê as configurações para o uso do PostgreSQL.
+ * 
+ * @author Alan Ghelardi
+ *
+ */
 final class DeploymentSettings implements EnvironmentSettings {
 
 	private final URI databaseURI;
 
-	DeploymentSettings() {
-		String databaseUrl = System.getenv("DATABASE_URL");
-
+	DeploymentSettings(String databaseUrl) {
 		try {
 			databaseURI = new URI(databaseUrl);
 		} catch (URISyntaxException e) {
