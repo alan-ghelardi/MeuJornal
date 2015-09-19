@@ -1,4 +1,4 @@
-package com.meujornal.infrastructure.shared;
+package com.meujornal.infrastructure.persistence.settings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.Specializes;
+import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -15,8 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import br.com.caelum.vraptor.jpa.EntityManagerFactoryCreator;
 
-import com.meujornal.infrastructure.persistence.settings.DatabaseSettings;
-
 @Specializes
 public class CustomEntityManagerFactoryCreator extends
 		EntityManagerFactoryCreator {
@@ -24,13 +23,13 @@ public class CustomEntityManagerFactoryCreator extends
 	private static final Logger logger = LoggerFactory
 			.getLogger(CustomEntityManagerFactoryCreator.class);
 
-	// Fábrica do gerenciador de entidades
+	@Inject
+	private DatabaseSettings settings;
+
 	@Override
 	@ApplicationScoped
 	@Produces
 	public EntityManagerFactory getEntityManagerFactory() {
-		DatabaseSettings settings = new DatabaseSettings();
-
 		Map<String, String> overrides = new HashMap<>();
 		overrides
 				.put("javax.persistence.jdbc.driver", settings.getDriverName());
@@ -47,7 +46,6 @@ public class CustomEntityManagerFactoryCreator extends
 		return Persistence.createEntityManagerFactory("default", overrides);
 	}
 
-	// Descarta a fábrica
 	@Override
 	public void destroy(@Disposes EntityManagerFactory factory) {
 		super.destroy(factory);

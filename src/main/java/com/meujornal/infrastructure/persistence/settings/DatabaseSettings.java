@@ -1,5 +1,7 @@
 package com.meujornal.infrastructure.persistence.settings;
 
+import javax.enterprise.context.ApplicationScoped;
+
 /**
  * Provê as configurações do banco de dados. Internamente utiliza o pattern
  * state para alternar entre as configurações de desenvolvimento e de produção
@@ -8,7 +10,8 @@ package com.meujornal.infrastructure.persistence.settings;
  * @author Alan Ghelardi
  *
  */
-public final class DatabaseSettings {
+@ApplicationScoped
+public class DatabaseSettings {
 
 	private static final String ENVIRONMENT_VARIABLE = "DATABASE_URL";
 
