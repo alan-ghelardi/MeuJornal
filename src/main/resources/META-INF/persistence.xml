@@ -15,8 +15,6 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="false" />
-			<property name="hibernate.proxool.properties" value="META-INF/proxool.properties" />
-			<property name="hibernate.proxool.pool_alias" value="proxool-settings" />
 		</properties>
 	</persistence-unit>
 </persistence>

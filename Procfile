@@ -1,1 +1,1 @@
-web: sed -i -e 's,<servlet-container name="default">,<servlet-container name="default" use-listener-encoding="true" default-encoding="UTF-8">,g' target/wildfly-8.2.0.Final/standalone/configuration/standalone.xml&&chmod +x target/wildfly-8.2.0.Final/bin/standalone.sh&&target/wildfly-8.2.0.Final/bin/standalone.sh -Djboss.http.port=$PORT -b 0.0.0.0
+web: export VRAPTOR_ENV=PRODUCTION&&chmode +x startup.sh&&startup.sh

@@ -72,11 +72,6 @@
 			<version>5.2.1.Final</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-proxool</artifactId>
-			<version>5.0.1.Final</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
