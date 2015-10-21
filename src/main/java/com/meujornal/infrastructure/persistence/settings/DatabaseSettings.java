@@ -4,9 +4,8 @@ import javax.enterprise.context.ApplicationScoped;
 
 /**
  * Provê as configurações do banco de dados. Internamente utiliza o pattern
- * state para alternar entre as configurações de desenvolvimento e de produção
- * dependendo da presença ou não da variável de sistema que contém a URL do
- * banco de dados de produção.
+ * state para alternar entre as configurações de desenvolvimento e de produção a
+ * partir do valor da variável de ambiente VRAPTOR_ENV.
  * 
  * @author Alan Ghelardi
  *
@@ -14,20 +13,21 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class DatabaseSettings {
 
-	private static final String DATABASE_URL = "OPENSHIFT_POSTGRESQL_DB_URL";
+	private static final String PRODUCTION_ENVIRONMENT = "VRAPTOR_ENV";
 
 	private final EnvironmentSettings settings;
 
 	public DatabaseSettings() {
-		if (isInDeployEnvironment()) {
-			settings = new DeploymentSettings(System.getenv(DATABASE_URL));
+		if (isInProductionEnvironment()) {
+			settings = new ProductionSettings();
 		} else {
 			settings = new DevelopmentSettings();
 		}
 	}
 
-	private boolean isInDeployEnvironment() {
-		return System.getenv(DATABASE_URL) != null;
+	private boolean isInProductionEnvironment() {
+		String environment = System.getenv(PRODUCTION_ENVIRONMENT);
+		return environment != null && environment.equals("PRODUCTION");
 	}
 
 	public String getUsername() {
