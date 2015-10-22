@@ -13,7 +13,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class DatabaseSettings {
 
-	private static final String PRODUCTION_ENVIRONMENT = "VRAPTOR_ENV";
+	private static final String VRAPTOR_ENV = "VRAPTOR_ENV";
 
 	private final EnvironmentSettings settings;
 
@@ -26,7 +26,7 @@ public class DatabaseSettings {
 	}
 
 	private boolean isInProductionEnvironment() {
-		String environment = System.getenv(PRODUCTION_ENVIRONMENT);
+		String environment = System.getenv(VRAPTOR_ENV);
 		return environment != null && environment.equals("PRODUCTION");
 	}
 

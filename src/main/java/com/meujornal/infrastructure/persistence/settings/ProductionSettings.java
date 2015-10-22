@@ -13,6 +13,7 @@ final class ProductionSettings implements EnvironmentSettings {
 	private static final String DATABASE_PORT = "PORT";
 	private static final String DATABASE_USERNAME = "USERNAME";
 	private static final String DATABASE_PASSWORD = "PASSWORD";
+	private static final String DATABASE_NAME = "meujornal";
 
 	@Override
 	public String getUsername() {
@@ -32,7 +33,8 @@ final class ProductionSettings implements EnvironmentSettings {
 	public String getJdbcUrl() {
 		return "jdbc:postgresql://"
 				+ environmentVariableValueFor(DATABASE_HOST) + ":"
-				+ environmentVariableValueFor(DATABASE_PORT);
+				+ environmentVariableValueFor(DATABASE_PORT) + "/"
+				+ DATABASE_NAME;
 	}
 
 	@Override
