@@ -27,7 +27,7 @@ public class DatabaseSettings {
 
 	private boolean isInProductionEnvironment() {
 		String environment = System.getenv(VRAPTOR_ENV);
-		return environment != null && environment.equals("PRODUCTION");
+		return environment != null && environment.equals("production");
 	}
 
 	public String getUsername() {
