@@ -13,6 +13,18 @@
 		<p>${feed.descricao}</p>
 
 		<h3>Últimas Notícias</h3>
+		
+		<form role="search"class="form-horizontal"
+		method="POST"
+		action="${pageContext.request.contextPath}/admin/feeds${feed.id == null ? '' : '/'}${feed.id}"
+			novalidate="novalidate">
+			<label>Busca:</label>
+			<input type="hidden" value="" name="${_csrf.parameterName}"
+				value="${_csrf.token}"/>
+				<input name="feed.id" type="hidden"	value="${feed.id}" />
+		
+		</form>
+		
 		<ul class="list-group">
 			<c:forEach var="noticia" items="${noticias}" varStatus="loop">
 				<li class="list-group-item"><article>
