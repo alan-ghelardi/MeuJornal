@@ -94,4 +94,14 @@ public class NoticiasDAO {
 				.getResultList();
 	}
 
+	public NewsAndTheirCount buscarNoticiasPorPalavraChaveECategoria(
+			String palavraChave, String categoria, int quantas, int comecandoEm) {
+		return null;
+	}
+
+	public NewsAndTheirCount buscarNoticiasPorPalavraChaveEFeed(
+			String palavraChave, Long feed, int quantas, int comecandoEm) {
+		return null;
+	}
+
 }
