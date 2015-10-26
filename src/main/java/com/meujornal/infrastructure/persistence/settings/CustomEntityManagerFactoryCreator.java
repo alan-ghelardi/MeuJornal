@@ -26,6 +26,17 @@ public class CustomEntityManagerFactoryCreator extends
 	@Inject
 	private DatabaseSettings settings;
 
+	/**
+	 * @deprecated CDI eyes only.
+	 */
+	public CustomEntityManagerFactoryCreator() {
+		this(null);
+	}
+
+	public CustomEntityManagerFactoryCreator(DatabaseSettings settings) {
+		this.settings = settings;
+	}
+
 	@Override
 	@ApplicationScoped
 	@Produces

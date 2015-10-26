@@ -8,7 +8,7 @@ import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Result;
 
-import com.meujornal.infrastructure.persistence.common.NewsAndTheirCount;
+import com.meujornal.infrastructure.persistence.common.SearchResults;
 import com.meujornal.infrastructure.persistence.dao.FeedsDAO;
 import com.meujornal.infrastructure.persistence.dao.NoticiasDAO;
 import com.meujornal.models.noticias.Feed;
@@ -36,7 +36,7 @@ public class FeedsController {
 			int comecandoEm = page * NOTICIAS_POR_PAGINA
 					- (NOTICIAS_POR_PAGINA - 1);
 
-			NewsAndTheirCount searchResults = noticiasDAO
+			SearchResults searchResults = noticiasDAO
 					.buscarTodasRelacionadasA(feed, comecandoEm,
 							NOTICIAS_POR_PAGINA);
 			long lastPage = determinarUltimaPaginaComBaseEm(searchResults

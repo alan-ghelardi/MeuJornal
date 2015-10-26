@@ -1,18 +1,24 @@
 package com.meujornal.infrastructure.persistence.dao;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 
 import com.meujornal.infrastructure.persistence.common.CategoryAndQuantity;
-import com.meujornal.infrastructure.persistence.common.NewsAndTheirCount;
+import com.meujornal.infrastructure.persistence.common.SearchResults;
 import com.meujornal.models.noticias.Feed;
 import com.meujornal.models.noticias.Noticia;
 
@@ -20,25 +26,28 @@ import com.meujornal.models.noticias.Noticia;
 public class NoticiasDAO {
 
 	private final EntityManager entityManager;
+	private final CriteriaBuilder cb;
 
 	/**
 	 * @deprecated CDI eyes only.
 	 */
 	NoticiasDAO() {
-		this(null);
+		this.entityManager = null;
+		this.cb = null;
 	}
 
 	@Inject
 	public NoticiasDAO(EntityManager entityManager) {
 		this.entityManager = entityManager;
+		this.cb = entityManager.getCriteriaBuilder();
 	}
 
 	public void salvar(Noticia noticia) {
 		entityManager.persist(noticia);
 	}
 
-	public NewsAndTheirCount buscarTodasRelacionadasA(Feed feed,
-			int comecandoEm, int quantas) {
+	public SearchResults buscarTodasRelacionadasA(Feed feed, int comecandoEm,
+			int quantas) {
 		String query = "SELECT noticia FROM Noticia AS noticia WHERE noticia.feed = :feed ORDER BY noticia.dataDePublicacao DESC";
 
 		List<Noticia> noticias = entityManager
@@ -48,7 +57,7 @@ public class NoticiasDAO {
 
 		long contagem = contarNoticiasRelacionadasA(feed);
 
-		return new NewsAndTheirCount(noticias, contagem);
+		return new SearchResults(noticias, contagem);
 	}
 
 	private long contarNoticiasRelacionadasA(Feed feed) {
@@ -94,14 +103,80 @@ public class NoticiasDAO {
 				.getResultList();
 	}
 
-	public NewsAndTheirCount buscarNoticiasPorPalavraChaveECategoria(
-			String palavraChave, String categoria, int quantas, int comecandoEm) {
-		return null;
+	public SearchResults buscarNoticiasPorPalavraChaveECategoria(
+			String palavraChave, String categoria, int comecandoEm, int quantas) {
+		return efetuarPesquisa(palavraChave, comecandoEm, quantas,
+				(noticia) -> {
+					if (!isNullOrEmpty(categoria))
+						return cb.equal(noticia.get("feed").get("categoria"),
+								categoria);
+					return null;
+				});
 	}
 
-	public NewsAndTheirCount buscarNoticiasPorPalavraChaveEFeed(
-			String palavraChave, Long feed, int quantas, int comecandoEm) {
-		return null;
+	private SearchResults efetuarPesquisa(String palavraChave, int comecandoEm,
+			int quantas, Function<Root<Noticia>, Expression<Boolean>> filtro) {
+		if (isNullOrEmpty(palavraChave)) {
+			return SearchResults.NONE;
+		}
+
+		palavraChave = "%" + palavraChave.toLowerCase() + "%";
+		CriteriaQuery<Noticia> query = cb.createQuery(Noticia.class);
+		Root<Noticia> noticia = rootFor(query);
+
+		Expression<Boolean> predicado = construirPredicadoPara(noticia,
+				palavraChave, filtro);
+
+		List<Noticia> noticias = entityManager
+				.createQuery(query.where(predicado))
+				.setFirstResult(comecandoEm).setMaxResults(quantas)
+				.getResultList();
+
+		Long total = contagemTotalDeResultadosPara(predicado);
+
+		return new SearchResults(noticias, total);
+	}
+
+	private Expression<Boolean> construirPredicadoPara(Root<Noticia> noticia,
+			String palavraChave,
+			Function<Root<Noticia>, Expression<Boolean>> filtro) {
+		Expression<Boolean> predicado = cb.or(
+				cb.like(cb.lower(noticia.get("titulo")), palavraChave),
+				cb.like(cb.lower(noticia.get("descricao")), palavraChave));
+
+		Expression<Boolean> resultadoDoFiltro = filtro.apply(noticia);
+
+		if (resultadoDoFiltro != null) {
+			predicado = cb.and(predicado, filtro.apply(noticia));
+		}
+		return predicado;
+	}
+
+	private <T> Root<Noticia> rootFor(CriteriaQuery<T> query) {
+		Root<Noticia> noticia = query.from(Noticia.class);
+		noticia.alias("n");
+		return noticia;
+	}
+
+	private Long contagemTotalDeResultadosPara(Expression<Boolean> predicate) {
+		CriteriaQuery<Long> countingQuery = cb.createQuery(Long.class);
+		Root<Noticia> not = rootFor(countingQuery);
+		countingQuery.select(cb.count(not)).where(predicate);
+		return entityManager.createQuery(countingQuery).getSingleResult();
+	}
+
+	public SearchResults buscarNoticiasPorPalavraChaveEFeed(
+			String palavraChave, Long idDoFeed, int comecandoEm, int quantas) {
+		return efetuarPesquisa(
+				palavraChave,
+				comecandoEm,
+				quantas,
+				(noticia) -> {
+					if (idDoFeed != null)
+						return cb
+								.equal(noticia.get("feed").get("id"), idDoFeed);
+					return null;
+				});
 	}
 
 }

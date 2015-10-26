@@ -47,7 +47,7 @@ public class Usuario implements Serializable {
 	private String email;
 	@NotNull
 	@Convert(converter = RoleConverter.class)
-	private Role papel;
+	private Role papel = Role.USER;
 	@NotBlank
 	private String perguntaDeSeguranca;
 	@NotBlank

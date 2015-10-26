@@ -4,12 +4,11 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -34,8 +33,7 @@ public class Noticia {
 	@NotBlank
 	@URL
 	private String link;
-	@Lob
-	@Basic
+	@Column(columnDefinition = "TEXT")
 	private String descricao;
 	@ManyToOne(optional = false)
 	@OnDelete(action = CASCADE)
