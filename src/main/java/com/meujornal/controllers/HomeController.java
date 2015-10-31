@@ -1,5 +1,7 @@
 package com.meujornal.controllers;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import javax.inject.Inject;
 
 import br.com.caelum.vraptor.Controller;
@@ -26,4 +28,12 @@ public class HomeController {
 				.include("categorias", feedsDAO.buscarTodasAsCategoriasExistentes());
 	}
 
+	@Get("/pesquisa")
+	public void pesquisar(String palavraChave, String categoria) {
+		if (!isNullOrEmpty(palavraChave) || !isNullOrEmpty(categoria)) {
+			result.include("palavraChave", palavraChave).include("resultados",
+					NoticiasDAO.buscarNoticiasPorPalavraChaveECategoria(palavraChave, categoria, 1, 1000));
+		}
+		result.redirectTo(HomeController.class).index();
+	}
 }
