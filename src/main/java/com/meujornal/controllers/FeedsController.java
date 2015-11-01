@@ -16,7 +16,7 @@ import com.meujornal.models.noticias.Feed;
 @Controller
 public class FeedsController {
 
-	private static final int NOTICIAS_POR_PAGINA = 15;
+	private static final int NOTICIAS_POR_PAGINA = 10;
 
 	@Inject
 	private Result result;
@@ -33,24 +33,15 @@ public class FeedsController {
 			result.use(status()).notFound();
 		} else {
 			page = page == 0 ? 1 : page;
-			int comecandoEm = page * NOTICIAS_POR_PAGINA
-					- (NOTICIAS_POR_PAGINA - 1);
+			int comecandoEm = page * NOTICIAS_POR_PAGINA - NOTICIAS_POR_PAGINA;
 
-			SearchResults searchResults = noticiasDAO
-					.buscarTodasRelacionadasA(feed, comecandoEm,
-							NOTICIAS_POR_PAGINA);
-			long lastPage = determinarUltimaPaginaComBaseEm(searchResults
-					.getCount());
+			SearchResults searchResults = noticiasDAO.buscarTodasRelacionadasA(
+					feed, comecandoEm, NOTICIAS_POR_PAGINA);
 
-			result.include("feed", feed)
-					.include("noticias", searchResults.getNews())
-					.include("page", page).include("lastPage", lastPage)
+			result.include("feed", feed).include("page", page)
+					.include("allNews", searchResults)
 					.include("newsPerPage", NOTICIAS_POR_PAGINA);
 		}
-	}
-
-	private int determinarUltimaPaginaComBaseEm(long totalDeNoticias) {
-		return (int) Math.ceil((double) totalDeNoticias / NOTICIAS_POR_PAGINA);
 	}
 
 }

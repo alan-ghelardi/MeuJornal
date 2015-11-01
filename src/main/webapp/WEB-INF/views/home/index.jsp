@@ -27,43 +27,34 @@
 		</c:choose>
 	</div>
 
-	<h2>Últimas Notícias</h2>
-	<br>
 	<div class="col-md-6">
 		<form id="busca-form" role="form" class="form-horizontal" method="GET"
-			action="${pageContext.request.contextPath}/pesquisa"
-			novalidate="novalidate">
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" /> <input name="busca.id" type="hidden"
-				value="${busca.id}" />
-
+			action="${pageContext.request.contextPath}/pesquisa">
+			<input type="hidden" name="page" value="1" />
 
 			<div class="form-group">
 				<label for="busca" class="control-label col-md-3">Busca</label>
 				<div class="col-md-6">
 					<input id="busca" name="palavraChave" class="form-control"
-						type="search" aria-describedby="busca-help"
-						value="${palavraChave}" />
+						type="search" value="${palavraChave}" required />
 				</div>
 			</div>
-
-
 
 			<div class="form-group">
 				<label for="categories" class="control-label col-md-3">Categoria</label>
 
 				<div class="col-md-6">
-					<select id="categories" name="categoria" class="form-control"
-						aria-describedby="category-help" data-rule-required="true"
-						data-msg-required="Informe uma categoria para filtrar as notÃ­cias.">
-						<c:forEach var="categoria" items="${categorias}">
-							<option value="${categoria}"
-								${categoria == feed.categoria ? 'selected' : ''}>${categoria}</option>
+					<select id="categories" name="categoria" class="form-control">
+						<option value="">Todas as categorias</option>
+
+						<c:forEach var="categoriaExistente" items="${categorias}">
+							<option value="${categoriaExistente}"
+								${categoriaExistente == categoria ? 'selected' : ''}>${categoriaExistente}</option>
 						</c:forEach>
-						<option value="" selected="selected">Todas as categorias</option>
 					</select>
 				</div>
 			</div>
+
 			<div class="btn-group centered">
 				<button class="btn btn-primary" type="submit">
 					<i class="glyphicon glyphicon-search"></i> Buscar
@@ -74,20 +65,77 @@
 		<c:choose>
 			<c:when test="${resultados != null}">
 				<h3>Resultados da Pesquisa</h3>
-				<c:forEach var="noticia" items="${resultados.news}">
-					<article>
-						<header>
-							<h4>
-								<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
-							</h4>
-							<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
-								(${noticia.feed.categoria})</p>
-						</header>
-						<p>${noticia.descricao}</p>
-					</article>
-				</c:forEach>
+
+				<c:if test="${resultados.totalOfResultsFound == 0}">
+					<p class="text-info">
+						Sua pesquisa por <strong>${palavraChave}</strong>
+						<c:if test="${not empty categoria}">
+						 na categoria <strong>${categoria }</strong>
+						</c:if>
+						não encontrou nenhum resultado. Sugestão:
+					</p>
+					<ul>
+						<li>Verifique a ortografia do termo digitado.</li>
+						<li>Digite uma única palavra-chave. E.g. <strong>educação</strong>.
+						</li>
+						<li>Informe uma palavra-chave mais genérica.</li>
+						<li>Experimente efetuar a pesquisa em todas as categorias.</li>
+					</ul>
+				</c:if>
+
+				<c:if test="${resultados.totalOfResultsFound > 0}">
+					<p class="text-success">
+						Encontradas ${resultados.totalOfResultsFound} notícias com a
+						palavra-chave <strong>${palavraChave}</strong>
+						<c:if test="${not empty categoria}">
+						 na categoria <strong>${categoria }</strong>
+						</c:if>
+
+						<c:forEach var="noticia" items="${resultados.news}">
+							<article>
+								<header>
+									<h4>
+										<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
+									</h4>
+									<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
+										(${noticia.feed.categoria})</p>
+								</header>
+								<p>${noticia.descricao}</p>
+							</article>
+						</c:forEach>
+
+						<c:if test="${resultados.lastPage > 1}">
+							<nav>
+								<ul class="pagination">
+									<c:if test="${page != 1}">
+										<li><a
+											href="${pageContext.request.contextPath}/pesquisa?palavraChave=${palavraChave}&categoria=${categoria}&page=${page - 1}">Anterior</a>
+									</c:if>
+									<c:forEach begin="${1}" end="${resultados.lastPage}"
+										varStatus="loop">
+										<c:choose>
+											<c:when test="${loop.index == page}">
+												<li class="active">${loop.index}</li>
+											</c:when>
+											<c:otherwise>
+												<li><a
+													href="${pageContext.request.contextPath}/pesquisa?palavraChave=${palavraChave}&categoria=${categoria}&page=${loop.index}">${loop.index}</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									<c:if test="${page != resultados.lastPage}">
+										<li><a
+											href="${pageContext.request.contextPath}/pesquisa?palavraChave=${palavraChave}&categoria=${categoria}&page=${page + 1}">Próxima</a></li>
+									</c:if>
+								</ul>
+							</nav>
+						</c:if>
+				</c:if>
 			</c:when>
+
 			<c:otherwise>
+				<h2>Últimas Notícias</h2>
+
 				<c:forEach var="group" items="${groups.entrySet()}">
 					<h3>
 						<a href="#">${group.key.category} (${group.key.quantity})</a>

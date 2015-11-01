@@ -59,7 +59,7 @@ public class FeedsDAO {
 
 	// Retorna uma coleção com todas as categorias registradas no sistema
 	public Collection<String> buscarTodasAsCategoriasExistentes() {
-		final String query = "SELECT feed.categoria FROM Feed AS feed ORDER BY feed.categoria";
+		final String query = "SELECT DISTINCT feed.categoria FROM Feed AS feed ORDER BY feed.categoria";
 		return entityManager.createQuery(query, String.class).getResultList();
 	}
 

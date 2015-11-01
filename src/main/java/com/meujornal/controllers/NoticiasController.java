@@ -59,7 +59,7 @@ public class NoticiasController implements CronTask {
 	 */
 	@Override
 	public String frequency() {
-		return "0 0/30 * * * ?";
+		return "0 0/10 * * * ?";
 	}
 
 }

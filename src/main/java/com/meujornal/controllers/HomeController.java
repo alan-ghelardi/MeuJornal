@@ -1,13 +1,13 @@
 package com.meujornal.controllers;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
 import javax.inject.Inject;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.interceptor.IncludeParameters;
 
+import com.meujornal.infrastructure.persistence.common.SearchResults;
 import com.meujornal.infrastructure.persistence.dao.FeedsDAO;
 import com.meujornal.infrastructure.persistence.dao.NoticiasDAO;
 
@@ -24,16 +24,26 @@ public class HomeController {
 	@Get("/")
 	public void index() {
 		result.include("feeds", feedsDAO.buscarTodos())
-				.include("groups", NoticiasDAO.agruparUltimasNoticiasSegundoSuasCategorias(10))
-				.include("categorias", feedsDAO.buscarTodasAsCategoriasExistentes());
+				.include(
+						"groups",
+						NoticiasDAO
+								.agruparUltimasNoticiasSegundoSuasCategorias(10))
+				.include("categorias",
+						feedsDAO.buscarTodasAsCategoriasExistentes());
 	}
 
 	@Get("/pesquisa")
-	public void pesquisar(String palavraChave, String categoria) {
-		if (!isNullOrEmpty(palavraChave) || !isNullOrEmpty(categoria)) {
-			result.include("palavraChave", palavraChave).include("resultados",
-					NoticiasDAO.buscarNoticiasPorPalavraChaveECategoria(palavraChave, categoria, 1, 1000));
-		}
-		result.redirectTo(HomeController.class).index();
+	@IncludeParameters
+	public void pesquisar(String palavraChave, String categoria, int page) {
+		int noticiasPorPagina = 10;
+		int comecandoEm = page * noticiasPorPagina - noticiasPorPagina;
+
+		SearchResults resultados = NoticiasDAO
+				.buscarNoticiasPorPalavraChaveECategoria(palavraChave,
+						categoria, comecandoEm, noticiasPorPagina);
+
+		result.include("resultados", resultados)
+				.redirectTo(HomeController.class).index();
 	}
+
 }
