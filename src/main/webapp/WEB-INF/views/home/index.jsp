@@ -85,8 +85,7 @@
 
 				<c:if test="${resultados.totalOfResultsFound > 0}">
 					<p class="text-success">
-						Encontradas ${resultados.totalOfResultsFound} notícias com a
-						palavra-chave <strong>${palavraChave}</strong>
+						Encontrados ${resultados.totalOfResultsFound} resultados para <strong>${palavraChave}</strong>
 						<c:if test="${not empty categoria}">
 						 na categoria <strong>${categoria }</strong>
 						</c:if>

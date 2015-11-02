@@ -36,7 +36,7 @@
 
 				<c:if test="${results.totalOfResultsFound > 0}">
 					<p class="text-success">
-						Exibindo resultados para <strong>${palavraChave}</strong>.
+						Encontrados ${results.totalOfResultsFound} resultados para <strong>${palavraChave}</strong>.
 					</p>
 				</c:if>
 
