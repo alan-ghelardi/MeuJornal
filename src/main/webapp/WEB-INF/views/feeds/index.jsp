@@ -12,56 +12,85 @@
 		<h2>${feed.titulo}(${feed.categoria})</h2>
 		<p>${feed.descricao}</p>
 
-		<h3>Últimas Notícias</h3>
-
-		<form role="search" class="form-horizontal" method="POST"
-			action="${pageContext.request.contextPath}/admin/feeds${feed.id == null ? '' : '/'}${feed.id}"
-			novalidate="novalidate">
-			<label>Busca:</label> <input type="hidden" value=""
-				name="${_csrf.parameterName}" value="${_csrf.token}" /> <input
-				name="feed.id" type="hidden" value="${feed.id}" />
-
+		<form id="busca-feeds-form" role="form" class="form-horizontal"
+			method="GET"
+			action="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa">
+			<input type="hidden" name="page" value="1" />
+			<div class="form-group">
+				<label for="busca" class="control-label col-md-3">Busca</label>
+				<div class="col-md-6">
+					<input id="busca" name="palavraChave" class="form-control"
+						type="search" value="${palavraChave}" required />
+				</div>
+				<div class="btn-group">
+					<button class="btn btn-primary" type="submit">
+						<i class="glyphicon glyphicon-search"></i> Buscar
+					</button>
+				</div>
+			</div>
 		</form>
 
-		<ul class="list-group">
-			<c:forEach var="noticia" items="${allNews.news}" varStatus="loop">
-				<li class="list-group-item"><article>
-						<header>
-							<h3>${page * newsPerPage - (newsPerPage - 1) + loop.index}
-								<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
-							</h3>
-							<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
-								(${noticia.feed.categoria})</p>
-						</header>
-						<p>${noticia.descricao}</p>
-					</article></li>
-			</c:forEach>
-		</ul>
+		<c:choose>
+			<c:when test="${isSearching}">
+				<h3>Resultados da Pesquisa</h3>
 
-		<c:if test="${allNews.lastPage > 1}">
-			<nav>
-				<ul class="pagination">
-					<c:if test="${page != 1}">
-						<li><a
-							href="${pageContext.request.contextPath}/feeds/${feed.id}?page=${page - 1}">Anterior</a>
-					</c:if>
-					<c:forEach begin="${1}" end="${allNews.lastPage}" varStatus="loop">
-						<c:choose>
-							<c:when test="${loop.index == page}">
-								<li class="active">${loop.index}</li>
-							</c:when>
-							<c:otherwise>
-								<li><a
-									href="${pageContext.request.contextPath}/feeds/${feed.id}?page=${loop.index}">${loop.index}</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-					<c:if test="${page != allNews.lastPage}">
-						<li><a
-							href="${pageContext.request.contextPath}/feeds/${feed.id}?page=${page + 1}">Próxima</a></li>
-					</c:if>
-				</ul>
-			</nav>
+				<c:if test="${results.totalOfResultsFound == 0}">
+					<p class="text-info">
+						Sua pesquisa por <strong>${palavraChave}</strong> não encontrou
+						nenhum resultado. Sugestão:
+					</p>
+					<ul>
+						<li>Verifique a ortografia do termo digitado.</li>
+						<li>Digite uma única palavra-chave. E.g. <strong>educação</strong>.
+						</li>
+						<li>Informe uma palavra-chave mais genérica.</li>
+					</ul>
+				</c:if>
+			</c:when>
+			<c:otherwise>
+				<h3>Últimas Notícias</h3>
+			</c:otherwise>
+		</c:choose>
+
+		<c:if test="${results.totalOfResultsFound > 0}">
+			<ul class="list-group">
+				<c:forEach var="noticia" items="${results.news}" varStatus="loop">
+					<li class="list-group-item"><article>
+							<header>
+								<h4>${page * newsPerPage - (newsPerPage - 1) + loop.index}.<a
+										href="${noticia.link}" target="_blank">${noticia.titulo}</a>
+								</h4>
+								<p>${noticia.dataDePublicacao}</p>
+							</header>
+							<p>${noticia.descricao}</p>
+						</article></li>
+				</c:forEach>
+			</ul>
+			<c:if test="${results.lastPage > 1}">
+				<nav>
+					<ul class="pagination">
+						<c:if test="${page != 1}">
+							<li><a
+								href="${pageContext.request.contextPath}/feeds/${feed.id}?page=${page - 1}">Anterior</a>
+						</c:if>
+						<c:forEach begin="${1}" end="${results.lastPage}" varStatus="loop">
+							<c:choose>
+								<c:when test="${loop.index == page}">
+									<li class="active">${loop.index}</li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.request.contextPath}/feeds/${feed.id}?page=${loop.index}">${loop.index}</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:if test="${page != results.lastPage}">
+							<li><a
+								href="${pageContext.request.contextPath}/feeds/${feed.id}?page=${page + 1}">Próxima</a></li>
+						</c:if>
+					</ul>
+				</nav>
+			</c:if>
 		</c:if>
 	</div>
 </body>

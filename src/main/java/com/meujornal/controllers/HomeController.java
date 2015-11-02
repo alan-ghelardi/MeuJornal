@@ -43,6 +43,7 @@ public class HomeController {
 						categoria, comecandoEm, noticiasPorPagina);
 
 		result.include("resultados", resultados)
+				.include("newsPerPage", noticiasPorPagina)
 				.redirectTo(HomeController.class).index();
 	}
 

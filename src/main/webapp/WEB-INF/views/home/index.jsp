@@ -94,8 +94,8 @@
 						<c:forEach var="noticia" items="${resultados.news}">
 							<article>
 								<header>
-									<h4>
-										<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
+									<h4>${page * newsPerPage - (newsPerPage - 1)}.<a
+											href="${noticia.link}" target="_blank">${noticia.titulo}</a>
 									</h4>
 									<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
 										(${noticia.feed.categoria})</p>
