@@ -14,9 +14,10 @@
 
 		<h3>Últimas Notícias</h3>
 		<br>
+		
 		<form id="busca-feeds-form" role="form" class="form-horizontal"
-			method="POST"
-			action="${pageContext.request.contextPath}"
+			method="GET"
+			action="${pageContext.request.contextPath}/feeds/{id}/pesquisa"
 			novalidate="novalidate">
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}"/>
@@ -25,8 +26,9 @@
 			<div class="form-group">
 				<label for="busca" class="control-label col-md-3">Busca</label>
 				<div class="col-md-6">
-					<input id="busca" name="feeds.busca" class="form-control"
-						 type="text" value="${feeds.busca}" />
+					<input id="busca" name="palavraChave" class="form-control"
+						 type="search" aria-describedby="busca-help" 
+						 value="${palavraChave}" />
 				</div>
 				<div class="btn-group">
 					<button class="btn btn-primary" type="submit">
@@ -34,21 +36,43 @@
 					</button>
 				</div>
 			</div>
-			</form>
-		<ul class="list-group">
-			<c:forEach var="noticia" items="${noticias}" varStatus="loop">
-				<li class="list-group-item"><article>
+		</form>
+		
+		<c:choose>
+			<c:when test="${resultados != null}">
+				<h3>Resultados da Pesquisa</h3>
+				<c:forEach var="noticia" items="${resultados.news}">
+					<article>
 						<header>
-							<h3>${page * newsPerPage - (newsPerPage - 1) + loop.index}
+							<h4>
 								<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
-							</h3>
+							</h4>
 							<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
 								(${noticia.feed.categoria})</p>
 						</header>
 						<p>${noticia.descricao}</p>
-					</article></li>
-			</c:forEach>
-		</ul>
+					</article>
+				</c:forEach>
+			</c:when>
+				<c:otherwise>
+					<ul class="list-group">
+						<c:forEach var="noticia" items="${noticias}" varStatus="loop">
+							<li class="list-group-item"><article>
+								<header>
+									<h3>${page * newsPerPage - (newsPerPage - 1) + loop.index}
+										<a href="${noticia.link}" target="_blank">${noticia.titulo}</a>
+									</h3>
+									<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
+									(${noticia.feed.categoria})</p>
+								</header>
+								<p>${noticia.descricao}</p>
+							</article></li>
+						</c:forEach>
+					</ul>
+				</c:otherwise>
+			</c:choose>
+		
+		
 		<nav>
 			<ul class="pagination">
 				<c:if test="${page != 1}">
@@ -72,6 +96,8 @@
 				</c:if>
 			</ul>
 		</nav>
+		
+		
 	</div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.meujornal.controllers;
 
 import static br.com.caelum.vraptor.view.Results.status;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import javax.inject.Inject;
 
@@ -52,5 +53,16 @@ public class FeedsController {
 	private int determinarUltimaPaginaComBaseEm(long totalDeNoticias) {
 		return (int) Math.ceil((double) totalDeNoticias / NOTICIAS_POR_PAGINA);
 	}
-
+	
+	@Get("/feeds/{id}/pesquisa")
+	public void pesquisarNoFeed(String palavraChave, Long idDoFeed){
+		if (!isNullOrEmpty(palavraChave) || (idDoFeed != null)){
+			result.include("palavraChave", palavraChave)
+			.include("resultados",
+					noticiasDAO.buscarNoticiasPorPalavraChaveEFeed(palavraChave, idDoFeed, 1, 1000));
+		}
+		result.redirectTo(FeedsController.class).index(idDoFeed, 1);
+		
+		}
 }
+
