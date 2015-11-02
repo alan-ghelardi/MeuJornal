@@ -51,7 +51,8 @@
 						<c:forEach var="feed" items="${feeds}">
 							<tr>
 								<td><a
-									href="${linkTo[AdminController].visualizar(feed.id)}">${feed.titulo}</a></td>
+									href="${linkTo[AdminController].visualizar(feed.id)}">${feed.titulo}
+										(${feed.categoria})</a></td>
 								<td><a class="btn btn-sm btn-link" role="button"
 									href="${linkTo[AdminController].editarFeed(feed.id)}"><i
 										class="glyphicon glyphicon-edit"></i> Editar</a></td>
