@@ -1,5 +1,7 @@
 package com.meujornal.controllers;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import javax.inject.Inject;
 
 import br.com.caelum.vraptor.Controller;
@@ -37,11 +39,27 @@ public class HomeController {
 	public void pesquisar(String palavraChave, String categoria, int page) {
 		int noticiasPorPagina = 10;
 		int comecandoEm = page * noticiasPorPagina - noticiasPorPagina;
-
-		SearchResults resultados = NoticiasDAO
-				.buscarNoticiasPorPalavraChaveECategoria(palavraChave,
-						categoria, comecandoEm, noticiasPorPagina);
-
+		SearchResults resultados;
+			
+		if (!isNullOrEmpty(palavraChave))
+		{
+			resultados = NoticiasDAO
+					.buscarNoticiasPorPalavraChaveECategoria(palavraChave,
+							categoria, comecandoEm, noticiasPorPagina);
+		}
+		else
+		{
+			if (!isNullOrEmpty(categoria))
+			{
+				resultados = NoticiasDAO
+						.buscarNoticiasPorCategoria(categoria, comecandoEm, noticiasPorPagina);
+			}
+			else
+			{
+				resultados = null;
+			}
+		}
+		
 		result.include("resultados", resultados)
 				.include("newsPerPage", noticiasPorPagina)
 				.redirectTo(HomeController.class).index();

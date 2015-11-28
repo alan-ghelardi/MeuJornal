@@ -114,6 +114,28 @@ public class NoticiasDAO {
 				});
 	}
 
+	public SearchResults buscarNoticiasPorCategoria(
+			String categoria, int comecandoEm, int quantas) {
+		if (isNullOrEmpty(categoria)) {
+			return SearchResults.NONE;
+		}
+
+		CriteriaQuery<Noticia> query = cb.createQuery(Noticia.class);
+		Root<Noticia> noticia = rootFor(query);
+
+		Expression<Boolean> predicado = cb.equal(noticia.get("feed").get("categoria"),
+				categoria);
+
+		List<Noticia> noticias = entityManager
+				.createQuery(query.where(predicado))
+				.setFirstResult(comecandoEm).setMaxResults(quantas)
+				.getResultList();
+
+		Long total = contagemTotalDeResultadosPara(predicado);
+
+		return new SearchResults(noticias, total);
+	}
+	
 	private SearchResults efetuarPesquisa(String palavraChave, int comecandoEm,
 			int quantas, Function<Root<Noticia>, Expression<Boolean>> filtro) {
 		if (isNullOrEmpty(palavraChave)) {
