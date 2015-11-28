@@ -179,4 +179,41 @@ public class NoticiasDAO {
 				});
 	}
 
+	public SearchResults buscarTodasQueContemAs(
+			List<String> palavrasDeInteresse, int comecandoEm, int quantas) {
+		if (palavrasDeInteresse.size() == 0) {
+			return SearchResults.NONE;
+		}
+
+		CriteriaQuery<Noticia> query = cb.createQuery(Noticia.class);
+		Root<Noticia> noticia = rootFor(query);
+
+		Expression<Boolean> predicadoFinal = null;
+
+		for (String termo : palavrasDeInteresse) {
+			termo = "%" + termo + "%";
+			Expression<Boolean> predicadoAtual = cb.or(
+					cb.like(cb.lower(noticia.get("titulo")),
+							termo.toLowerCase()),
+					cb.like(cb.lower(noticia.get("descricao")),
+							termo.toLowerCase()));
+
+			if (predicadoFinal != null) {
+				predicadoAtual = cb.or(predicadoAtual, predicadoFinal);
+			}
+
+			predicadoFinal = predicadoAtual;
+		}
+
+		List<Noticia> noticias = entityManager
+				.createQuery(query.where(predicadoFinal))
+				.setFirstResult(comecandoEm).setMaxResults(quantas)
+				.getResultList();
+
+		Long total = contagemTotalDeResultadosPara(predicadoFinal);
+
+		return new SearchResults(noticias, total);
+
+	}
+
 }

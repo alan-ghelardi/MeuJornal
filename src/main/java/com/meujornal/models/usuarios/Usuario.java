@@ -1,9 +1,12 @@
 package com.meujornal.models.usuarios;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -52,6 +55,8 @@ public class Usuario implements Serializable {
 	private String perguntaDeSeguranca;
 	@NotBlank
 	private String respostaDaPerguntaDeSeguranca;
+	@ElementCollection
+	private List<String> palavrasDeInteresse = new ArrayList<>();
 
 	// Retorna o id do usuário
 	public Long getId() {
@@ -128,6 +133,14 @@ public class Usuario implements Serializable {
 			String respostaDaPerguntaDeSeguranca) {
 		this.respostaDaPerguntaDeSeguranca = SensitiveDataEncoder
 				.encode(respostaDaPerguntaDeSeguranca);
+	}
+
+	public List<String> getPalavrasDeInteresse() {
+		return palavrasDeInteresse;
+	}
+
+	public void setPalavrasDeInteresse(List<String> palavrasDeInteresse) {
+		this.palavrasDeInteresse = palavrasDeInteresse;
 	}
 
 	// Retorna a string que está relaciona ao objeto Usuario
