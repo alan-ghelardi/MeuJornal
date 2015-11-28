@@ -10,6 +10,10 @@
 
 		this.isVisible = ko.observable(false);
 
+		this.canSubmitChanges = ko.computed(function() {
+			return this.keywords().length > 0;
+		}, this);
+
 	};
 
 	PreferencesViewModel.prototype.togglePreferences = function() {

@@ -57,8 +57,8 @@
 				<div class="col-md-9">
 					<div class="input-group">
 						<input id="keyword" name="keyword" class="form-control"
-							type="text" data-bind="value: newKeyword" /> <span
-							class="input-group-btn">
+							type="text" data-bind="value: newKeyword, valueUpdate: 'keydown'" />
+						<span class="input-group-btn">
 							<button type="button" class="btn btn-xs"
 								data-bind="click: addKeyword, enable: !!newKeyword()">
 								<i class="glyphicon glyphicon-plus"></i>
@@ -68,54 +68,62 @@
 				</div>
 			</div>
 			<div class="btn-group">
-				<button type="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary"
+					data-bind="enable: canSubmitChanges">
 					<i class="glyphicon glyphicon-save"></i> Salvar
 				</button>
 			</div>
 		</form>
 
-		<c:if test="${results != null && results.totalOfResultsFound > 0}">
-			<h3>Notícias (${results.totalOfResultsFound})</h3>
-			<ul class="list-group">
-				<c:forEach var="noticia" items="${results.news}" varStatus="loop">
-					<li class="list-group-item"><article>
-							<header>
-								<h4>${page * newsPerPage - (newsPerPage - 1) + loop.index}.<a
-										href="${noticia.link}" target="_blank">${noticia.titulo}</a>
-								</h4>
-								<p>${noticia.feed.titulo}-${noticia.dataDePublicacao}</p>
-							</header>
-							<p>${noticia.descricao}</p>
-						</article></li>
-				</c:forEach>
-			</ul>
+		<c:choose>
+			<c:when test="${results.totalOfResultsFound == 0}">
+				<p class="text-info">Você ainda não possui notícias relacionadas
+					à palavras de interesse.</p>
+			</c:when>
+			<c:otherwise>
+				<h3>Notícias (${results.totalOfResultsFound})</h3>
+				<ul class="list-group">
+					<c:forEach var="noticia" items="${results.news}" varStatus="loop">
+						<li class="list-group-item"><article>
+								<header>
+									<h4>${page * newsPerPage - (newsPerPage - 1) + loop.index}.<a
+											href="${noticia.link}" target="_blank">${noticia.titulo}</a>
+									</h4>
+									<p>${noticia.feed.titulo}-${noticia.dataDePublicacao}</p>
+								</header>
+								<p>${noticia.descricao}</p>
+							</article></li>
+					</c:forEach>
+				</ul>
 
-			<c:if test="${results.lastPage > 1}">
-				<nav>
-					<ul class="pagination">
-						<c:if test="${page != 1}">
-							<li><a
-								href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${page - 1}">Anterior</a>
-						</c:if>
-						<c:forEach begin="${1}" end="${results.lastPage}" varStatus="loop">
-							<c:choose>
-								<c:when test="${loop.index == page}">
-									<li class="active">${loop.index}</li>
-								</c:when>
-								<c:otherwise>
-									<li><a
-										href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${loop.index}">${loop.index}</a></li>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<c:if test="${page != results.lastPage}">
-							<li><a
-								href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${page + 1}">Próxima</a></li>
-						</c:if>
-					</ul>
-				</nav>
-			</c:if>
-		</c:if>
+				<c:if test="${results.lastPage > 1}">
+					<nav>
+						<ul class="pagination">
+							<c:if test="${page != 1}">
+								<li><a
+									href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${page - 1}">Anterior</a>
+							</c:if>
+							<c:forEach begin="${1}" end="${results.lastPage}"
+								varStatus="loop">
+								<c:choose>
+									<c:when test="${loop.index == page}">
+										<li class="active">${loop.index}</li>
+									</c:when>
+									<c:otherwise>
+										<li><a
+											href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${loop.index}">${loop.index}</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:if test="${page != results.lastPage}">
+								<li><a
+									href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${page + 1}">Próxima</a></li>
+							</c:if>
+						</ul>
+					</nav>
+				</c:if>
+			</c:otherwise>
+		</c:choose>
 	</div>
 </body>
 </html>
