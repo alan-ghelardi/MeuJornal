@@ -179,7 +179,7 @@ public class NoticiasDAO {
 				});
 	}
 
-	public SearchResults buscarTodasQueContemAs(
+	public SearchResults buscarNoticiasRelacionadasAsSeguintesPalavras(
 			List<String> palavrasDeInteresse, int comecandoEm, int quantas) {
 		if (palavrasDeInteresse.size() == 0) {
 			return SearchResults.NONE;
@@ -188,15 +188,29 @@ public class NoticiasDAO {
 		CriteriaQuery<Noticia> query = cb.createQuery(Noticia.class);
 		Root<Noticia> noticia = rootFor(query);
 
+		Expression<Boolean> predicado = construirPredicadoComBaseEm(
+				palavrasDeInteresse, noticia);
+
+		List<Noticia> noticias = entityManager
+				.createQuery(query.where(predicado))
+				.setFirstResult(comecandoEm).setMaxResults(quantas)
+				.getResultList();
+
+		Long total = contagemTotalDeResultadosPara(predicado);
+
+		return new SearchResults(noticias, total);
+
+	}
+
+	private Expression<Boolean> construirPredicadoComBaseEm(
+			List<String> palavrasDeInteresse, Root<Noticia> noticia) {
 		Expression<Boolean> predicadoFinal = null;
 
-		for (String termo : palavrasDeInteresse) {
-			termo = "%" + termo + "%";
+		for (String palavra : palavrasDeInteresse) {
+			palavra = ("%" + palavra + "%").toLowerCase();
 			Expression<Boolean> predicadoAtual = cb.or(
-					cb.like(cb.lower(noticia.get("titulo")),
-							termo.toLowerCase()),
-					cb.like(cb.lower(noticia.get("descricao")),
-							termo.toLowerCase()));
+					cb.like(cb.lower(noticia.get("titulo")), palavra),
+					cb.like(cb.lower(noticia.get("descricao")), palavra));
 
 			if (predicadoFinal != null) {
 				predicadoAtual = cb.or(predicadoAtual, predicadoFinal);
@@ -205,15 +219,7 @@ public class NoticiasDAO {
 			predicadoFinal = predicadoAtual;
 		}
 
-		List<Noticia> noticias = entityManager
-				.createQuery(query.where(predicadoFinal))
-				.setFirstResult(comecandoEm).setMaxResults(quantas)
-				.getResultList();
-
-		Long total = contagemTotalDeResultadosPara(predicadoFinal);
-
-		return new SearchResults(noticias, total);
-
+		return predicadoFinal;
 	}
 
 }

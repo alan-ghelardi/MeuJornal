@@ -34,7 +34,7 @@ public class PreferenciasController {
 		page = page == 0 ? 1 : page;
 		int comecandoEm = page * NOTICIAS_POR_PAGINA - NOTICIAS_POR_PAGINA;
 
-		SearchResults searchResults = noticiasDAO.buscarTodasQueContemAs(
+		SearchResults searchResults = noticiasDAO.buscarNoticiasRelacionadasAsSeguintesPalavras(
 				palavrasDeInteresse, comecandoEm, NOTICIAS_POR_PAGINA);
 
 		result.include("page", page).include("results", searchResults)
