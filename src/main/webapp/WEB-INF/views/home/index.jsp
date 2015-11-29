@@ -33,10 +33,10 @@
 			<input type="hidden" name="page" value="1" />
 
 			<div class="form-group">
-				<label for="busca" class="control-label col-md-3">Busca</label>
+				<label for="busca" class="control-label col-md-3">Palavra-chave</label>
 				<div class="col-md-6">
 					<input id="busca" name="palavraChave" class="form-control"
-						type="search" value="${palavraChave}" required />
+						type="search" value="${palavraChave}" />
 				</div>
 			</div>
 
@@ -57,14 +57,14 @@
 
 			<div class="btn-group centered">
 				<button class="btn btn-primary" type="submit">
-					<i class="glyphicon glyphicon-search"></i> Buscar
+					<i class="glyphicon glyphicon-search"></i> Filtrar
 				</button>
 			</div>
 		</form>
 
 		<c:choose>
 			<c:when test="${resultados != null}">
-				<h3>Resultados da Pesquisa</h3>
+				<h3>Resultados do Filtro</h3>
 
 				<c:if test="${resultados.totalOfResultsFound == 0}">
 					<p class="text-info">
@@ -85,7 +85,10 @@
 
 				<c:if test="${resultados.totalOfResultsFound > 0}">
 					<p class="text-success">
-						Encontrados ${resultados.totalOfResultsFound} resultados para <strong>${palavraChave}</strong>
+						Encontrados ${resultados.totalOfResultsFound} resultados
+						<c:if test="${not empty palavraChave}">
+						 para <strong>${palavraChave}</strong>
+						</c:if>
 						<c:if test="${not empty categoria}">
 						 na categoria <strong>${categoria }</strong>
 						</c:if>
