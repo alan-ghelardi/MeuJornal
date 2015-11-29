@@ -101,7 +101,7 @@
 						<ul class="pagination">
 							<c:if test="${page != 1}">
 								<li><a
-									href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${page - 1}">Anterior</a>
+									href="${pageContext.request.contextPath}/preferencias?page=${page - 1}">Anterior</a>
 							</c:if>
 							<c:forEach begin="${1}" end="${results.lastPage}"
 								varStatus="loop">
@@ -111,13 +111,13 @@
 									</c:when>
 									<c:otherwise>
 										<li><a
-											href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${loop.index}">${loop.index}</a></li>
+											href="${pageContext.request.contextPath}/preferencias?page=${loop.index}">${loop.index}</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							<c:if test="${page != results.lastPage}">
 								<li><a
-									href="${pageContext.request.contextPath}/feeds/${feed.id}/pesquisa?palavraChave=${palavraChave}&page=${page + 1}">Próxima</a></li>
+									href="${pageContext.request.contextPath}/preferencias?page=${page + 1}">Próxima</a></li>
 							</c:if>
 						</ul>
 					</nav>
