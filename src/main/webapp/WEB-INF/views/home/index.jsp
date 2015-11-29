@@ -93,10 +93,11 @@
 						 na categoria <strong>${categoria }</strong>
 						</c:if>
 
-						<c:forEach var="noticia" items="${resultados.news}">
+						<c:forEach var="noticia" items="${resultados.news}"
+							varStatus="loop">
 							<article>
 								<header>
-									<h4>${page * newsPerPage - (newsPerPage - 1)}.<a
+									<h4>${page * newsPerPage - (newsPerPage - 1) + loop.index}.<a
 											href="${noticia.link}" target="_blank">${noticia.titulo}</a>
 									</h4>
 									<p>${noticia.dataDePublicacao}-${noticia.feed.titulo}
